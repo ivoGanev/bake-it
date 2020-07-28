@@ -1,4 +1,4 @@
-package android.ivo.bake_it;
+package android.ivo.bake_it.screen.main;
 
 import android.view.View;
 import android.widget.Toast;
