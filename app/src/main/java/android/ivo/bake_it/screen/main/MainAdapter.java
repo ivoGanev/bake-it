@@ -6,6 +6,7 @@ import android.ivo.bake_it.model.Recipe;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,9 +15,11 @@ import java.util.List;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private List<Recipe> recipes;
+    private OnViewItemClickedListener onViewItemClickedListener;
 
-    public MainAdapter(List<Recipe> recipes) {
+    public MainAdapter(List<Recipe> recipes, OnViewItemClickedListener onItemClickListener) {
         this.recipes = recipes;
+        this.onViewItemClickedListener = onItemClickListener;
     }
 
     @NonNull
@@ -36,13 +39,25 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         return recipes.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
-        ItemRecipeBinding binding;
+        private ItemRecipeBinding binding;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemRecipeBinding.bind(itemView);
+            binding.itemRecipeName.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(onViewItemClickedListener!=null)
+                onViewItemClickedListener.onRecipeClicked(getAdapterPosition());
         }
     }
 
+    public interface OnViewItemClickedListener
+    {
+        void onRecipeClicked(int position);
+    }
 }

@@ -13,7 +13,7 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainAdapter.OnViewItemClickedListener {
 
     ActivityMainBinding binding;
 
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             recipes.add(recipe);
         }
 
-        mainAdapter = new MainAdapter(recipes);
+        mainAdapter = new MainAdapter(recipes, this);
 
         initRecipeRecyclerView();
     }
@@ -51,5 +51,10 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean deviceIsTablet() {
         return getResources().getBoolean(R.bool.isTablet);
+    }
+
+    @Override
+    public void onRecipeClicked(int position) {
+
     }
 }
