@@ -1,10 +1,16 @@
 package android.ivo.bake_it.api;
 
 import android.content.Context;
+import android.ivo.bake_it.model.Ingredient;
 import android.ivo.bake_it.model.Recipe;
+import android.ivo.bake_it.model.Step;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,6 +27,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import timber.log.Timber;
 
 public class RecipesClient {
     private static final int CONNECTION_TIMEOUT = 5000;
@@ -78,15 +86,15 @@ public class RecipesClient {
         return result;
     }
 
-    public String getAllRecipes() throws ExecutionException, InterruptedException {
+    public Future<List<Recipe>> getAllRecipes() throws ExecutionException, InterruptedException {
         final URL url = getHandledURL();
-
-        Future<String> resultFuture = executorService.submit(new Callable<String>() {
+        final List<Recipe> recipes = new ArrayList<>();
+        Future<List<Recipe>> resultFuture = executorService.submit(new Callable<List<Recipe>>() {
             @Override
-            public String call() {
+            public List<Recipe> call() {
                 HttpURLConnection httpURLConnection = null;
                 InputStream inputStream = null;
-                String result = null;
+                String jsonToString = null;
 
                 try {
                     httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -105,8 +113,59 @@ public class RecipesClient {
                         builder.append(line);
                     }
 
-                    result = builder.toString();
+                    jsonToString = builder.toString();
+
                     //TODO Parse JSON Objects
+
+
+                    JSONArray mainJsonArray = null;
+                    try {
+                        mainJsonArray =new JSONArray(jsonToString);
+                        for (int i = 0; i < mainJsonArray.length(); i++) {
+                            JSONObject recipeJson = mainJsonArray.getJSONObject(i);
+
+                            int id = recipeJson.getInt("id");
+                            int servings = recipeJson.getInt("servings");
+                            String name = recipeJson.getString("name");
+
+                            JSONArray ingredientsJsonArray = recipeJson.getJSONArray("ingredients");
+                            List<Ingredient> ingredients = new ArrayList<>();
+                            for (int j = 0; j < ingredientsJsonArray.length(); j++) {
+                                JSONObject ingredientJson = ingredientsJsonArray.getJSONObject(j);
+                                Ingredient ingredient = new Ingredient(
+                                        ingredientJson.getInt("quantity"),
+                                        ingredientJson.getString("measure"),
+                                        ingredientJson.getString("ingredient"));
+                                ingredients.add(ingredient);
+                            }
+
+                            JSONArray stepsJsonArray = recipeJson.getJSONArray("steps");
+                            List<Step> steps = new ArrayList<>();
+                            for (int j = 0; j < stepsJsonArray.length(); j++) {
+                                JSONObject stepJson = stepsJsonArray.getJSONObject(j);
+                                Step.Builder stepBuilder = new Step.Builder()
+                                        .id(stepJson.getInt("id"))
+                                        .thumbnailURL(stepJson.getString("thumbnailURL"))
+                                        .description(stepJson.getString("description"))
+                                        .shortDescription(stepJson.getString("shortDescription"))
+                                        .videoURL(stepJson.getString("videoURL"));
+                                Step step = new Step(stepBuilder);
+                                steps.add(step);
+                            }
+
+                            Recipe.Builder recipeBuilder = new Recipe.Builder()
+                                    .id(id)
+                                    .name(name)
+                                    .ingredients(ingredients)
+                                    .steps(steps)
+                                    .servings(servings);
+
+                            Recipe recipe = new Recipe(recipeBuilder);
+                            recipes.add(recipe);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -119,12 +178,12 @@ public class RecipesClient {
                     }
                 }
 
-                return result;
+                return recipes;
             }
 
         });
 
-        return resultFuture.get();
+        return resultFuture;
     }
 
     /**
@@ -133,8 +192,14 @@ public class RecipesClient {
     public List<Recipe> getMockedRecipes() {
         ArrayList<Recipe> recipes = new ArrayList<>();
         for (int i = 0; i < 60; i++) {
-            Recipe recipe = new Recipe();
-            recipe.setName("Recipe " + i);
+            Recipe.Builder recipeBuilder = new Recipe.Builder()
+                    .id(i)
+                    .name("" + i)
+                    .ingredients(null)
+                    .steps(null)
+                    .servings(i);
+
+            Recipe recipe = new Recipe(recipeBuilder);
             recipes.add(recipe);
         }
         return recipes;

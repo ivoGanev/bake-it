@@ -7,28 +7,31 @@ public class Ingredient {
 
     private String ingredient;
 
-    public int getQuantity() {
-        return this.quantity;
+    public Ingredient(int quantity, String measure, String ingredient) {
+        this.quantity = quantity;
+        this.measure = measure;
+        this.ingredient = ingredient;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public int getQuantity() {
+        return this.quantity;
     }
 
     public String getMeasure() {
         return this.measure;
     }
 
-    public void setMeasure(String measure) {
-        this.measure = measure;
-    }
-
     public String getIngredient() {
         return this.ingredient;
     }
 
-    public void setIngredient(String ingredient) {
-        this.ingredient = ingredient;
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "quantity=" + quantity +
+                ", measure='" + measure + '\'' +
+                ", ingredient='" + ingredient + '\'' +
+                '}';
     }
 }
 

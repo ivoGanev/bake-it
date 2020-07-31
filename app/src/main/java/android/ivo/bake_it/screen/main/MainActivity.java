@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.ivo.bake_it.R;
 import android.ivo.bake_it.api.RecipesClient;
 import android.ivo.bake_it.databinding.ActivityMainBinding;
+import android.ivo.bake_it.model.Recipe;
 import android.os.Bundle;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import timber.log.Timber;
 
@@ -61,9 +64,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onConnected() {
+        Timber.d("-------------------------------");
         Timber.d("Connected to web service");
+        Timber.d("-------------------------------");
         try {
-            Timber.d(recipesClient.getAllRecipes());
+            Future<List<Recipe>> allRecipes = recipesClient.getAllRecipes();
+            Timber.d(allRecipes.get().toString());
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
