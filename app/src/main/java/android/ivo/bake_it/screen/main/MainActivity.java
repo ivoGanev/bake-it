@@ -7,17 +7,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.ivo.bake_it.R;
+import android.ivo.bake_it.api.RecipesClient;
 import android.ivo.bake_it.databinding.ActivityMainBinding;
-import android.ivo.bake_it.model.Recipe;
 import android.os.Bundle;
 
-import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity implements MainAdapter.OnViewItemClickedListener {
+import timber.log.Timber;
+
+public class MainActivity extends AppCompatActivity
+        implements MainAdapter.OnViewItemClickedListener, RecipesClient.OnConnectedListener {
 
     ActivityMainBinding binding;
 
     MainAdapter mainAdapter;
+
+    RecipesClient recipesClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +30,10 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.OnVie
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ArrayList<Recipe> recipes = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Recipe recipe = new Recipe();
-            recipe.setName("Recipe " + i);
-            recipes.add(recipe);
-        }
+        recipesClient = RecipesClient.createClient(this, this);
+        RecipesClient.connect();
 
-        mainAdapter = new MainAdapter(recipes, this);
+        mainAdapter = new MainAdapter(recipesClient.getMockedRecipes(), this);
 
         initRecipeRecyclerView();
     }
@@ -56,5 +57,17 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.OnVie
     @Override
     public void onRecipeClicked(int position) {
 
+    }
+
+    @Override
+    public void onConnected() {
+        Timber.d("Connected to web service");
+        try {
+            Timber.d(recipesClient.getAllRecipes());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

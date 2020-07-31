@@ -1,12 +1,10 @@
 package android.ivo.bake_it.screen.main;
 
-import android.ivo.bake_it.api.ApiClient;
+import android.ivo.bake_it.api.RecipesClient;
 import android.ivo.bake_it.model.Recipe;
-import android.view.View;
-import android.widget.Toast;
 
 public class MainActivityPresenter {
-    private ApiClient apiClient;
+    private RecipesClient recipesClient;
     private View view;
     private Recipe recipe;
 
