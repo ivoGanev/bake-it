@@ -12,7 +12,26 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        tools:text="Recipe Name"
+        android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Recipe Name" />
+
+    <TextView
+        android:id="@+id/item_recipe_servings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/item_recipe_servings"
+        app:layout_constraintStart_toStartOf="@+id/item_recipe_name"
+        app:layout_constraintTop_toBottomOf="@+id/item_recipe_name" />
+
+    <TextView
+        android:id="@+id/item_recipe_servings_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        tools:text="6"
+        app:layout_constraintStart_toEndOf="@+id/item_recipe_servings"
+        app:layout_constraintTop_toBottomOf="@+id/item_recipe_name" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

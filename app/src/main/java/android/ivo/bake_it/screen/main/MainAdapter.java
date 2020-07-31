@@ -31,7 +31,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.binding.itemRecipeName.setText(recipes.get(position).getName());
+        Recipe recipe = recipes.get(position);
+        holder.binding.itemRecipeName.setText(recipe.getName());
+        holder.binding.itemRecipeServingsCount.setText(String.valueOf(recipe.getServings()));
     }
 
     @Override
@@ -46,7 +48,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemRecipeBinding.bind(itemView);
-            binding.itemRecipeName.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override

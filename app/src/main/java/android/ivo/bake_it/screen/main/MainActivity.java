@@ -6,11 +6,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.ivo.bake_it.R;
 import android.ivo.bake_it.api.RecipesClient;
 import android.ivo.bake_it.databinding.ActivityMainBinding;
 import android.ivo.bake_it.model.Recipe;
+import android.ivo.bake_it.screen.recipe.RecipeActivity;
 import android.os.Bundle;
+import android.os.Parcel;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -21,11 +24,15 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity
         implements MainAdapter.OnViewItemClickedListener, RecipesClient.OnConnectedListener {
 
+    public static final String RECIPE_BUNDLE_KEY = "recipe bundle";
+
     ActivityMainBinding binding;
 
     MainAdapter mainAdapter;
 
     RecipesClient recipesClient;
+
+    List<Recipe> recipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +42,6 @@ public class MainActivity extends AppCompatActivity
 
         recipesClient = RecipesClient.createClient(this, this);
         RecipesClient.connect();
-
-        mainAdapter = new MainAdapter(recipesClient.getMockedRecipes(), this);
-
-        initRecipeRecyclerView();
     }
 
     private void initRecipeRecyclerView() {
@@ -59,7 +62,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRecipeClicked(int position) {
-
+        Intent intent = new Intent(this, RecipeActivity.class);
+        Bundle bundle = new Bundle();
+        Recipe recipe = recipes.get(position);
+        intent.putExtra(RECIPE_BUNDLE_KEY, recipes.get(position));
+        startActivity(intent);
     }
 
     @Override
@@ -69,10 +76,13 @@ public class MainActivity extends AppCompatActivity
         Timber.d("-------------------------------");
         try {
             Future<List<Recipe>> allRecipes = recipesClient.getAllRecipes();
+            // TODO: run allRecipes.get() on another thread and then post in on the UI thread
+            recipes = allRecipes.get();
+            mainAdapter = new MainAdapter(recipes, this);
+            initRecipeRecyclerView();
+
             Timber.d(allRecipes.get().toString());
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }

@@ -115,9 +115,6 @@ public class RecipesClient {
 
                     jsonToString = builder.toString();
 
-                    //TODO Parse JSON Objects
-
-
                     JSONArray mainJsonArray = null;
                     try {
                         mainJsonArray =new JSONArray(jsonToString);
