@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         }
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mainAdapter);
     }
@@ -64,12 +64,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRecipeClicked(int position) {
         Intent intent = new Intent(this, RecipeActivity.class);
-        Bundle bundle = new Bundle();
-
         Recipe recipe = recipes.get(position);
-//        for (Ingredient ingredient : recipe.getIngredients()) {
-//            Timber.d(ingredient.toString());
-//        }
         intent.putExtra(RECIPE_BUNDLE_KEY, recipe);
         startActivity(intent);
     }
