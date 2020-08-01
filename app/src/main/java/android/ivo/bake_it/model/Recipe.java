@@ -5,19 +5,27 @@ import android.os.Parcelable;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 public class Recipe implements Parcelable {
-    private final int id;
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
 
-    private final String name;
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
+    private  int id;
+    private  String name;
+    private  List<Ingredient> ingredients;
+    private  List<Step> steps;
+    private  int servings;
 
-    private final List<Ingredient> ingredients;
-
-    private final List<Step> steps;
-
-    private final int servings;
-
-    public Recipe(Builder builder)
-    {
+    public Recipe(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
         this.ingredients = builder.ingredients;
@@ -37,24 +45,16 @@ public class Recipe implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(name);
+
+        Timber.d(ingredients.toString());
         Ingredient[] ingredientsArray = new Ingredient[ingredients.size()];
-        dest.writeParcelableArray(ingredients.toArray(ingredientsArray), 0);
+        dest.writeTypedArray(ingredients.toArray(ingredientsArray), 0);
+
         Step[] stepsArray = new Step[steps.size()];
-        dest.writeParcelableArray(steps.toArray(stepsArray), 0);
+        dest.writeTypedArray(steps.toArray(stepsArray), 0);
+
         dest.writeInt(servings);
     }
-
-    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
-        @Override
-        public Recipe createFromParcel(Parcel in) {
-            return new Recipe(in);
-        }
-
-        @Override
-        public Recipe[] newArray(int size) {
-            return new Recipe[size];
-        }
-    };
 
     public int getId() {
         return this.id;
@@ -81,6 +81,17 @@ public class Recipe implements Parcelable {
         return 0;
     }
 
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ",\n name='" + name + '\'' +
+                ",\n ingredients=" + ingredients +
+                ",\n steps=" + steps +
+                ",\n servings=" + servings +
+                '}';
+    }
+
     public static class Builder {
         private int id;
 
@@ -97,8 +108,7 @@ public class Recipe implements Parcelable {
             return this;
         }
 
-        public Builder name(String name)
-        {
+        public Builder name(String name) {
             this.name = name;
             return this;
         }
@@ -117,16 +127,5 @@ public class Recipe implements Parcelable {
             this.servings = servings;
             return this;
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Recipe{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", ingredients=" + ingredients +
-                ", steps=" + steps +
-                ", servings=" + servings +
-                '}';
     }
 }

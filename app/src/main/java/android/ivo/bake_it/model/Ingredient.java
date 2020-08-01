@@ -22,6 +22,13 @@ public class Ingredient implements Parcelable {
         ingredient = in.readString();
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(quantity);
+        dest.writeString(measure);
+        dest.writeString(ingredient);
+    }
+
     public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
         @Override
         public Ingredient createFromParcel(Parcel in) {
@@ -49,22 +56,15 @@ public class Ingredient implements Parcelable {
     @Override
     public String toString() {
         return "Ingredient{" +
-                "quantity=" + quantity +
-                ", measure='" + measure + '\'' +
-                ", ingredient='" + ingredient + '\'' +
+                "\nquantity=" + quantity +
+                ",\n measure='" + measure + '\'' +
+                ",\n ingredient='" + ingredient + '\'' +
                 '}';
     }
 
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(quantity);
-        dest.writeString(measure);
-        dest.writeString(ingredient);
     }
 }
 

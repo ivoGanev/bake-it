@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.ivo.bake_it.R;
 import android.ivo.bake_it.api.RecipesClient;
 import android.ivo.bake_it.databinding.ActivityMainBinding;
+import android.ivo.bake_it.model.Ingredient;
 import android.ivo.bake_it.model.Recipe;
 import android.ivo.bake_it.screen.recipe.RecipeActivity;
 import android.os.Bundle;
@@ -64,8 +65,12 @@ public class MainActivity extends AppCompatActivity
     public void onRecipeClicked(int position) {
         Intent intent = new Intent(this, RecipeActivity.class);
         Bundle bundle = new Bundle();
+
         Recipe recipe = recipes.get(position);
-        intent.putExtra(RECIPE_BUNDLE_KEY, recipes.get(position));
+//        for (Ingredient ingredient : recipe.getIngredients()) {
+//            Timber.d(ingredient.toString());
+//        }
+        intent.putExtra(RECIPE_BUNDLE_KEY, recipe);
         startActivity(intent);
     }
 
@@ -81,7 +86,7 @@ public class MainActivity extends AppCompatActivity
             mainAdapter = new MainAdapter(recipes, this);
             initRecipeRecyclerView();
 
-            Timber.d(allRecipes.get().toString());
+            Timber.d("" + recipes.toString());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

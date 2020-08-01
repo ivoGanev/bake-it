@@ -123,10 +123,10 @@ public class Step implements Parcelable {
     public String toString() {
         return "Step{" +
                 "id=" + id +
-                ", shortDescription='" + shortDescription + '\'' +
-                ", description='" + description + '\'' +
-                ", videoURL='" + videoURL + '\'' +
-                ", thumbnailURL='" + thumbnailURL + '\'' +
+                ",\n shortDescription='" + shortDescription + '\'' +
+                ",\n description='" + description + '\'' +
+                ",\n videoURL='" + videoURL + '\'' +
+                ",\n thumbnailURL='" + thumbnailURL + '\'' +
                 '}';
     }
 }

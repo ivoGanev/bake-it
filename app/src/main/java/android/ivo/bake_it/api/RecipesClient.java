@@ -188,17 +188,20 @@ public class RecipesClient {
      */
     public List<Recipe> getMockedRecipes() {
         ArrayList<Recipe> recipes = new ArrayList<>();
-        for (int i = 0; i < 60; i++) {
-            Recipe.Builder recipeBuilder = new Recipe.Builder()
-                    .id(i)
-                    .name("" + i)
-                    .ingredients(null)
-                    .steps(null)
-                    .servings(i);
 
-            Recipe recipe = new Recipe(recipeBuilder);
-            recipes.add(recipe);
-        }
+            recipes.add(new Recipe(new Recipe.Builder()
+                    .name("Nutella Pie")
+                    .servings(8)));
+            recipes.add(new Recipe(new Recipe.Builder()
+                    .name("Brownies")
+                    .servings(8)));
+            recipes.add(new Recipe(new Recipe.Builder()
+                    .name("Yellow Cake")
+                    .servings(8)));
+            recipes.add(new Recipe(new Recipe.Builder()
+                    .name("Cheesecake")
+                    .servings(8)));
+
         return recipes;
     }
 
