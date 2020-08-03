@@ -41,8 +41,8 @@ public class Ingredient implements Parcelable {
         }
     };
 
-    public int getQuantity() {
-        return this.quantity;
+    public String getQuantityToString() {
+        return Integer.toString(this.quantity);
     }
 
     public String getMeasure() {

@@ -11,10 +11,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class RecipeMasterFragment extends Fragment {
 
     ActivityRecipeMasterBinding binding;
+
+    IngredientsAdapter ingredientsAdapter;
 
     public static Fragment newInstance(Bundle bundle) {
         Fragment fragment = new RecipeMasterFragment();
@@ -29,13 +33,21 @@ public class RecipeMasterFragment extends Fragment {
         Bundle extras = getArguments();
         if (extras != null) {
             Recipe recipe = extras.getParcelable(MainActivity.RECIPE_BUNDLE_KEY);
-            binding.activityRecipeTitle.setText(recipe.getName());
+            if(recipe!=null) {
+                binding.activityRecipeTitle.setText(recipe.getName());
+                ingredientsAdapter = new IngredientsAdapter(recipe.getIngredients());
+                binding.activityRecipeRvIngredients.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                binding.activityRecipeRvIngredients.setHasFixedSize(true);
+                binding.activityRecipeRvIngredients.setAdapter(ingredientsAdapter);
+            }
         }
         return binding.getRoot();
     }
 
     @Override
     public void onDestroy() {
+        binding = null;
+        ingredientsAdapter = null;
         super.onDestroy();
     }
 }
