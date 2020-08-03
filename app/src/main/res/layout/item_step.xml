@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/item_step_short_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_step_visibility_indicator"
+        app:layout_constraintStart_toEndOf="@+id/item_step_visibility_indicator"
+        app:layout_constraintTop_toTopOf="@+id/item_step_visibility_indicator"
+        tools:text="Short Description" />
+
+    <TextView
+        android:id="@+id/item_step_long_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/item_step_thumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/item_step_thumbnail"
+        tools:text="Long Description" />
+
+    <ImageView
+        android:id="@+id/item_step_thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/item_step_short_description"
+        app:layout_constraintTop_toBottomOf="@+id/item_step_short_description"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/item_step_hidden_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="item_step_long_description,item_step_thumbnail"
+        android:visibility="gone">
+
+    </androidx.constraintlayout.widget.Group>
+
+    <ImageView
+        android:id="@+id/item_step_visibility_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_unfold_more_24" />
+</androidx.constraintlayout.widget.ConstraintLayout>

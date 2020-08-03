@@ -31,17 +31,16 @@ class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.ViewHol
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Ingredient ingredient = ingredients.get(position);
-        holder.binding.ingredientRvItemName.setText(ingredient.getIngredient());
-        holder.binding.ingredientRvItemQuantity.setText(ingredient.getQuantityToString());
-        holder.binding.ingredientRvItemMeasure.setText(ingredient.getMeasure());
+        holder.binding.itemIngredientName.setText(ingredient.getIngredient());
+        holder.binding.itemIngredientQuantity.setText(ingredient.getQuantityToString());
+        holder.binding.itemIngredientMeasure.setText(ingredient.getMeasure());
     }
 
     @Override
     public int getItemCount() {
         if (ingredients != null)
             return ingredients.size();
-        else
-            return 0;
+        return 0;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

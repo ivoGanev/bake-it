@@ -130,7 +130,7 @@ public class RecipesClient {
                             for (int j = 0; j < ingredientsJsonArray.length(); j++) {
                                 JSONObject ingredientJson = ingredientsJsonArray.getJSONObject(j);
                                 Ingredient ingredient = new Ingredient(
-                                        ingredientJson.getInt("quantity"),
+                                        ingredientJson.getDouble("quantity"),
                                         ingredientJson.getString("measure"),
                                         ingredientJson.getString("ingredient"));
                                 ingredients.add(ingredient);

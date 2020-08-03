@@ -3,36 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="12dp">
 
     <TextView
-        android:id="@+id/ingredient_rv_item_name"
-        android:layout_width="wrap_content"
+        android:id="@+id/item_ingredient_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        tools:text="Name"
-        app:layout_constraintEnd_toStartOf="@+id/ingredient_rv_item_quantity"
+
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/item_ingredient_quantity"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Name" />
 
     <TextView
-        android:id="@+id/ingredient_rv_item_quantity"
+        android:id="@+id/item_ingredient_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Quantity"
-        app:layout_constraintEnd_toStartOf="@+id/ingredient_rv_item_measure"
+        app:layout_constraintEnd_toStartOf="@+id/item_ingredient_measure"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ingredient_rv_item_name"
-        app:layout_constraintTop_toTopOf="@+id/ingredient_rv_item_name" />
+        app:layout_constraintStart_toEndOf="@+id/item_ingredient_name"
+        app:layout_constraintTop_toTopOf="@+id/item_ingredient_name" />
 
     <TextView
-        android:id="@+id/ingredient_rv_item_measure"
+        android:id="@+id/item_ingredient_measure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Measure"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ingredient_rv_item_quantity"
-        app:layout_constraintTop_toTopOf="@+id/ingredient_rv_item_quantity" />
+        app:layout_constraintStart_toEndOf="@+id/item_ingredient_quantity"
+        app:layout_constraintTop_toTopOf="@+id/item_ingredient_quantity" />
 </androidx.constraintlayout.widget.ConstraintLayout>

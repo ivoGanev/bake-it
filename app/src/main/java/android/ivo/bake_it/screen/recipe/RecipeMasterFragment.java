@@ -1,6 +1,7 @@
 package android.ivo.bake_it.screen.recipe;
 
 import android.ivo.bake_it.databinding.ActivityRecipeMasterBinding;
+import android.ivo.bake_it.databinding.ItemStepBinding;
 import android.ivo.bake_it.model.Recipe;
 import android.ivo.bake_it.screen.main.MainActivity;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ public class RecipeMasterFragment extends Fragment {
     ActivityRecipeMasterBinding binding;
 
     IngredientsAdapter ingredientsAdapter;
+
+    StepsAdapter stepsAdapter;
 
     public static Fragment newInstance(Bundle bundle) {
         Fragment fragment = new RecipeMasterFragment();
@@ -39,6 +42,11 @@ public class RecipeMasterFragment extends Fragment {
                 binding.activityRecipeRvIngredients.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
                 binding.activityRecipeRvIngredients.setHasFixedSize(true);
                 binding.activityRecipeRvIngredients.setAdapter(ingredientsAdapter);
+
+                stepsAdapter = new StepsAdapter(recipe.getSteps());
+                binding.activityRecipeMasterRvSteps.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                binding.activityRecipeRvIngredients.setHasFixedSize(true);
+                binding.activityRecipeMasterRvSteps.setAdapter(stepsAdapter);
             }
         }
         return binding.getRoot();
