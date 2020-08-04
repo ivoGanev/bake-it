@@ -1,7 +1,7 @@
 package android.ivo.bake_it.screen.recipe;
 
+import android.content.Context;
 import android.ivo.bake_it.databinding.ActivityRecipeMasterBinding;
-import android.ivo.bake_it.databinding.ItemStepBinding;
 import android.ivo.bake_it.model.Recipe;
 import android.ivo.bake_it.screen.main.MainActivity;
 import android.os.Bundle;
@@ -15,13 +15,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class RecipeMasterFragment extends Fragment {
+public class RecipeMasterFragment extends Fragment implements StepsAdapter.OnViewItemClickListener {
 
     ActivityRecipeMasterBinding binding;
 
     IngredientsAdapter ingredientsAdapter;
 
     StepsAdapter stepsAdapter;
+
+    OnStepClickedListener onStepClickedListener;
 
     public static Fragment newInstance(Bundle bundle) {
         Fragment fragment = new RecipeMasterFragment();
@@ -44,6 +46,7 @@ public class RecipeMasterFragment extends Fragment {
                 binding.activityRecipeRvIngredients.setAdapter(ingredientsAdapter);
 
                 stepsAdapter = new StepsAdapter(recipe.getSteps());
+                stepsAdapter.setOnViewItemClickListener(this);
                 binding.activityRecipeMasterRvSteps.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
                 binding.activityRecipeRvIngredients.setHasFixedSize(true);
                 binding.activityRecipeMasterRvSteps.setAdapter(stepsAdapter);
@@ -57,5 +60,28 @@ public class RecipeMasterFragment extends Fragment {
         binding = null;
         ingredientsAdapter = null;
         super.onDestroy();
+    }
+
+    @Override
+    public void onRecipeClicked(View view, int position) {
+        if(onStepClickedListener !=null)
+            onStepClickedListener.onStepButtonClicked(position);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            onStepClickedListener = (OnStepClickedListener)context;
+        }
+        catch (ClassCastException e) {
+            throw  new ClassCastException(context.toString()  + " must implement "
+                    + OnStepClickedListener.class.getSimpleName());
+        }
+    }
+
+    public interface OnStepClickedListener
+    {
+        void onStepButtonClicked(int position);
     }
 }

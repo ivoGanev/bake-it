@@ -1,7 +1,6 @@
 package android.ivo.bake_it.screen.main;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,11 +9,9 @@ import android.content.Intent;
 import android.ivo.bake_it.R;
 import android.ivo.bake_it.api.RecipesClient;
 import android.ivo.bake_it.databinding.ActivityMainBinding;
-import android.ivo.bake_it.model.Ingredient;
 import android.ivo.bake_it.model.Recipe;
-import android.ivo.bake_it.screen.recipe.RecipeActivity;
+import android.ivo.bake_it.screen.recipe.StepActivity;
 import android.os.Bundle;
-import android.os.Parcel;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRecipeClicked(int position) {
-        Intent intent = new Intent(this, RecipeActivity.class);
+        Intent intent = new Intent(this, StepActivity.class);
         Recipe recipe = recipes.get(position);
         intent.putExtra(RECIPE_BUNDLE_KEY, recipe);
         startActivity(intent);

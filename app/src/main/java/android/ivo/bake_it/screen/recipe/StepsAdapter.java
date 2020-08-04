@@ -17,10 +17,16 @@ import java.util.List;
 
 class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
 
-    List<Step> steps;
+    private OnViewItemClickListener onViewItemClickListener;
+
+    private List<Step> steps;
 
     public StepsAdapter(@NotNull List<Step> steps) {
         this.steps = steps;
+    }
+
+    public void setOnViewItemClickListener(OnViewItemClickListener onViewItemClickListener) {
+        this.onViewItemClickListener = onViewItemClickListener;
     }
 
     @NonNull
@@ -43,7 +49,6 @@ class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
             holder.binding.itemStepLongDescription.setText(longDescription);
         }
 
-
         HttpMediaFormat httpMediaFormat = new HttpMediaFormat(step.getThumbnailURL());
         if (httpMediaFormat.getFormat() == HttpMediaFormat.MP4) {
             // load the movie
@@ -59,8 +64,12 @@ class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
         return 0;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ItemStepBinding binding;
+    public interface OnViewItemClickListener {
+        void onRecipeClicked(View view, int position);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private ItemStepBinding binding;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,12 +79,8 @@ class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            View hiddenGroup = binding.itemStepHiddenGroup;
-            if (hiddenGroup.getVisibility() == View.GONE) {
-                hiddenGroup.setVisibility(View.VISIBLE);
-            } else {
-                hiddenGroup.setVisibility(View.GONE);
-            }
+            if (onViewItemClickListener != null)
+                onViewItemClickListener.onRecipeClicked(v, getAdapterPosition());
         }
     }
 }

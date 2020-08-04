@@ -23,11 +23,14 @@ public class HttpMediaFormatTest {
     }
 
     @Test
-    public void httpMediaFormat_providesJPEGFormat() {
+    public void httpMediaFormat_providesJPEGFormat1() {
         HttpMediaFormat httpMediaFormat = new HttpMediaFormat("http://hello.jpg");
         assertEquals(httpMediaFormat.getFormat(), HttpMediaFormat.JPEG);
+    }
 
-        HttpMediaFormat httpMediaFormat1 = new HttpMediaFormat("http://hello.jpeg");
-        assertEquals(httpMediaFormat1.getFormat(), HttpMediaFormat.JPEG);
+    @Test
+    public void httpMediaFormat_providesJPEGFormat2() {
+        HttpMediaFormat httpMediaFormat = new HttpMediaFormat("http://hello.jpeg");
+        assertEquals(httpMediaFormat.getFormat(), HttpMediaFormat.JPEG);
     }
 }

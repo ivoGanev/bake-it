@@ -2,19 +2,15 @@ package android.ivo.bake_it.screen.recipe;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.ivo.bake_it.R;
 import android.ivo.bake_it.model.Recipe;
 import android.ivo.bake_it.screen.main.MainActivity;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
-
-import java.util.ArrayList;
 
 import timber.log.Timber;
 
-public class RecipeActivity extends AppCompatActivity {
+public class StepActivity extends AppCompatActivity implements RecipeMasterFragment.OnStepClickedListener {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,5 +20,18 @@ public class RecipeActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.activity_recipe_main_layout, RecipeMasterFragment.newInstance(extras))
                 .commit();
+    }
+
+    @Override
+    public void onStepButtonClicked(int position) {
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null) {
+            Recipe recipe = extras.getParcelable(MainActivity.RECIPE_BUNDLE_KEY);
+            if(recipe!=null) {
+                Timber.d(recipe.getSteps().get(position).toString());
+                // load the detail fragment
+            }
+        }
+
     }
 }
