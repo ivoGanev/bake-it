@@ -11,4 +11,10 @@ public class BakeItApplication extends Application {
         if(BuildConfig.DEBUG)
             Timber.plant(new Timber.DebugTree());
     }
+
+
+    public boolean deviceIsTablet() {
+        return getResources().getBoolean(R.bool.isTablet);
+    }
+
 }

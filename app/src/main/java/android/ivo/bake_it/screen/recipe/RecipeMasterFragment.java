@@ -1,7 +1,7 @@
 package android.ivo.bake_it.screen.recipe;
 
 import android.content.Context;
-import android.ivo.bake_it.databinding.ActivityRecipeMasterBinding;
+import android.ivo.bake_it.databinding.FragmentRecipeMasterBinding;
 import android.ivo.bake_it.model.Recipe;
 import android.ivo.bake_it.screen.main.MainActivity;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class RecipeMasterFragment extends Fragment implements StepsAdapter.OnViewItemClickListener {
 
-    ActivityRecipeMasterBinding binding;
+    FragmentRecipeMasterBinding binding;
 
     IngredientsAdapter ingredientsAdapter;
 
@@ -34,22 +34,22 @@ public class RecipeMasterFragment extends Fragment implements StepsAdapter.OnVie
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = ActivityRecipeMasterBinding.inflate(inflater, container, false);
+        binding = FragmentRecipeMasterBinding.inflate(inflater, container, false);
         Bundle extras = getArguments();
         if (extras != null) {
             Recipe recipe = extras.getParcelable(MainActivity.RECIPE_BUNDLE_KEY);
             if(recipe!=null) {
-                binding.activityRecipeTitle.setText(recipe.getName());
+                binding.fragmentRecipeTitle.setText(recipe.getName());
                 ingredientsAdapter = new IngredientsAdapter(recipe.getIngredients());
-                binding.activityRecipeRvIngredients.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
-                binding.activityRecipeRvIngredients.setHasFixedSize(true);
-                binding.activityRecipeRvIngredients.setAdapter(ingredientsAdapter);
+                binding.fragmentRecipeRvIngredients.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                binding.fragmentRecipeRvIngredients.setHasFixedSize(true);
+                binding.fragmentRecipeRvIngredients.setAdapter(ingredientsAdapter);
 
                 stepsAdapter = new StepsAdapter(recipe.getSteps());
                 stepsAdapter.setOnViewItemClickListener(this);
-                binding.activityRecipeMasterRvSteps.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
-                binding.activityRecipeRvIngredients.setHasFixedSize(true);
-                binding.activityRecipeMasterRvSteps.setAdapter(stepsAdapter);
+                binding.fragmentRecipeMasterRvSteps.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                binding.fragmentRecipeMasterRvSteps.setHasFixedSize(true);
+                binding.fragmentRecipeMasterRvSteps.setAdapter(stepsAdapter);
             }
         }
         return binding.getRoot();

@@ -10,7 +10,7 @@ import android.ivo.bake_it.R;
 import android.ivo.bake_it.api.RecipesClient;
 import android.ivo.bake_it.databinding.ActivityMainBinding;
 import android.ivo.bake_it.model.Recipe;
-import android.ivo.bake_it.screen.recipe.StepActivity;
+import android.ivo.bake_it.screen.recipe.RecipeActivity;
 import android.os.Bundle;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRecipeClicked(int position) {
-        Intent intent = new Intent(this, StepActivity.class);
+        Intent intent = new Intent(this, RecipeActivity.class);
         Recipe recipe = recipes.get(position);
         intent.putExtra(RECIPE_BUNDLE_KEY, recipe);
         startActivity(intent);

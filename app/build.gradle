@@ -8,6 +8,10 @@ android {
         viewBinding true
     }
 
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    
     defaultConfig {
         applicationId "android.ivo.bake_it"
         minSdkVersion 19
