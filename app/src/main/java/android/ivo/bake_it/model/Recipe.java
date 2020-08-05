@@ -46,7 +46,6 @@ public class Recipe implements Parcelable {
         dest.writeInt(id);
         dest.writeString(name);
 
-        Timber.d(ingredients.toString());
         Ingredient[] ingredientsArray = new Ingredient[ingredients.size()];
         dest.writeTypedArray(ingredients.toArray(ingredientsArray), 0);
 

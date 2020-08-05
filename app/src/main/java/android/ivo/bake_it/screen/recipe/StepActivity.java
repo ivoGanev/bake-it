@@ -11,8 +11,10 @@ public class StepActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step);
+        Bundle bundle = getIntent().getExtras();
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.activity_step_fragment, new RecipeDetailFragment())
+                .replace(R.id.activity_step_fragment, RecipeDetailFragment.newInstance(getIntent().getExtras()))
                 .commit();
     }
 }

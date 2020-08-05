@@ -6,12 +6,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.ivo.bake_it.R;
-import android.ivo.bake_it.api.RecipesClient;
+import android.ivo.bake_it.BakeItApplication;
+import android.ivo.bake_it.Bundles;
+import android.ivo.bake_it.api.ApiClientRemote;
 import android.ivo.bake_it.databinding.ActivityMainBinding;
 import android.ivo.bake_it.model.Recipe;
 import android.ivo.bake_it.screen.recipe.RecipeActivity;
 import android.os.Bundle;
+
+import org.json.JSONException;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -20,15 +23,13 @@ import java.util.concurrent.Future;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity
-        implements MainAdapter.OnViewItemClickedListener, RecipesClient.OnConnectedListener {
-
-    public static final String RECIPE_BUNDLE_KEY = "recipe bundle";
+        implements MainAdapter.OnViewItemClickedListener, ApiClientRemote.OnConnectedListener {
 
     ActivityMainBinding binding;
 
     MainAdapter mainAdapter;
 
-    RecipesClient recipesClient;
+    ApiClientRemote apiClientRemote;
 
     List<Recipe> recipes;
 
@@ -38,13 +39,15 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        recipesClient = RecipesClient.createClient(this, this);
-        RecipesClient.connect();
+        apiClientRemote = ApiClientRemote.createClient(this, this);
+        ApiClientRemote.connect();
     }
 
     private void initRecipeRecyclerView() {
         RecyclerView recyclerView = binding.activityMainRv;
-        if (deviceIsTablet()) {
+        BakeItApplication application = (BakeItApplication)getApplication();
+
+        if (application.deviceIsTablet()) {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         } else {
             recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -54,33 +57,27 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(mainAdapter);
     }
 
-    private boolean deviceIsTablet() {
-        return getResources().getBoolean(R.bool.isTablet);
-    }
-
     @Override
     public void onRecipeClicked(int position) {
         Intent intent = new Intent(this, RecipeActivity.class);
         Recipe recipe = recipes.get(position);
-        intent.putExtra(RECIPE_BUNDLE_KEY, recipe);
+        intent.putExtra(Bundles.RECIPE_BUNDLE_KEY, recipe);
         startActivity(intent);
     }
 
     @Override
     public void onConnected() {
         Timber.d("-------------------------------");
-        Timber.d("Connected to web service");
+        Timber.d("Connected to remote host");
         Timber.d("-------------------------------");
         try {
-            Future<List<Recipe>> allRecipes = recipesClient.getAllRecipes();
+            Future<List<Recipe>> allRecipes = apiClientRemote.fetchRecipes();
             // TODO: run allRecipes.get() on another thread and then post in on the UI thread
             recipes = allRecipes.get();
-            mainAdapter = new MainAdapter(recipes, this);
-            initRecipeRecyclerView();
-
-            Timber.d("" + recipes.toString());
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+        mainAdapter = new MainAdapter(recipes, this);
+        initRecipeRecyclerView();
     }
 }
