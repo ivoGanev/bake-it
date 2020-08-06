@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.ivo.bake_it.BakeItApplication;
 import android.ivo.bake_it.Bundles;
@@ -59,6 +60,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRecipeClicked(int position) {
+        Intent callingIntent = getIntent();
+        if(callingIntent!=null) {
+            Bundle extras = callingIntent.getExtras();
+            if(extras!=null) {
+                int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
+                Timber.d(""+widgetId);
+            }
+        }
         Intent intent = new Intent(this, RecipeActivity.class);
         Recipe recipe = recipes.get(position);
         intent.putExtra(Bundles.RECIPE_BUNDLE_KEY, recipe);

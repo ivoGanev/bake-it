@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="7dp">
 
     <TextView
         android:id="@+id/my_widget_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        tools:text="Ingredient"
         tools:layout_editor_absoluteX="50dp"
         tools:layout_editor_absoluteY="22dp" />
+
+    <TextView
+        android:id="@+id/my_widget_item_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="200"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="22dp" />
+
+    <TextView
+        android:id="@+id/my_widget_item_measure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="ML"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="22dp" />
+
 </LinearLayout>

@@ -3,7 +3,7 @@ package android.ivo.bake_it.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.ivo.bake_it.R;
-import android.ivo.bake_it.model.Recipe;
+import android.ivo.bake_it.model.Ingredient;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -18,7 +18,7 @@ public class ListWidgetService extends RemoteViewsService {
 }
 
 class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-    private List<Recipe> recipes;
+    private List<Ingredient> ingredients;
 
     private Context context;
 
@@ -28,10 +28,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onCreate() {
-        recipes = new ArrayList<>();
-        recipes.add(new Recipe(new Recipe.Builder().name("blah 1")));
-        recipes.add(new Recipe(new Recipe.Builder().name("blah 2")));
-        recipes.add(new Recipe(new Recipe.Builder().name("blah 3")));
+        ingredients = new ArrayList<>();
     }
 
     @Override
@@ -46,13 +43,15 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return recipes.size();
+        return ingredients.size();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.my_widget_item);
-        rv.setTextViewText(R.id.my_widget_item_name, recipes.get(position).getName());
+        rv.setTextViewText(R.id.my_widget_item_name, ingredients.get(position).getIngredient());
+        rv.setTextViewText(R.id.my_widget_item_quantity, ingredients.get(position).getQuantityToString());
+        rv.setTextViewText(R.id.my_widget_item_measure, ingredients.get(position).getMeasure());
         return rv;
     }
 
