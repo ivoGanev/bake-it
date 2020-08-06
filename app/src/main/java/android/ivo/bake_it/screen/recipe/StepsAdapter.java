@@ -15,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
 
     private OnViewItemClickListener onViewItemClickListener;

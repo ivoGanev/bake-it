@@ -33,24 +33,28 @@ public class RecipeActivity extends AppCompatActivity implements RecipeMasterFra
     private void initializeFragments() {
         initializeRecipeMasterFragment();
         if (deviceIsTablet) {
-           initializeRecipeDetailsFragment();
+          initializeRecipeDetailsFragment();
         }
     }
 
     private void initializeRecipeMasterFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.activity_recipe_fragment, RecipeMasterFragment.newInstance(recipeBundle))
+                .replace(R.id.activity_recipe_fragment, RecipeMasterFragment.newInstance(recipeBundle))
                 .commit();
     }
 
     private void initializeRecipeDetailsFragment() {
+        initRecipeDetailFragmentWithPosition(0);
+    }
+
+    private void initRecipeDetailFragmentWithPosition(int position) {
         // initialize the first recipe on the list
         Bundle stepBundle = new Bundle();
-        stepBundle.putParcelable(Bundles.STEP_BUNDLE_KEY, recipe.getSteps().get(0));
+        stepBundle.putParcelable(Bundles.STEP_BUNDLE_KEY, recipe.getSteps().get(position));
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.activity_recipe_step_fragment, RecipeDetailFragment.newInstance(stepBundle))
+                .replace(R.id.activity_recipe_step_fragment, RecipeDetailFragment.newInstance(stepBundle))
                 .commit();
     }
 
@@ -62,7 +66,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeMasterFra
                 intent.putExtra(Bundles.STEP_BUNDLE_KEY,  recipe.getSteps().get(position));
                 startActivity(intent);
             } else {
-                initializeRecipeDetailsFragment();
+                initRecipeDetailFragmentWithPosition(position);
             }
         }
     }

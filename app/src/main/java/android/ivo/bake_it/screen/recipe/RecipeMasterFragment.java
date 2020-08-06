@@ -44,14 +44,8 @@ public class RecipeMasterFragment extends Fragment implements StepsAdapter.OnVie
         Bundle extras = getArguments();
 
         if (extras != null) {
-            //Recipe recipe = extras.getParcelable(Bundles.RECIPE_BUNDLE_KEY);
-            ApiClientLocal apiClientLocal = new ApiClientLocal(requireContext());
-            Recipe recipe = null;
-            try {
-                recipe = apiClientLocal.fetchRecipe(0);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+           // Recipe recipe = extras.getParcelable(Bundles.RECIPE_BUNDLE_KEY);
+            Recipe recipe = getRecipeLocal();
             if (recipe != null) {
                 binding.fragmentRecipeTitle.setText(recipe.getName());
                 ingredientsAdapter = new IngredientsAdapter(recipe.getIngredients());
@@ -69,6 +63,17 @@ public class RecipeMasterFragment extends Fragment implements StepsAdapter.OnVie
         return binding.getRoot();
     }
 
+    @org.jetbrains.annotations.Nullable
+    private Recipe getRecipeLocal() {
+        ApiClientLocal apiClientLocal = new ApiClientLocal(requireContext());
+        Recipe recipe = null;
+        try {
+            recipe = apiClientLocal.fetchRecipe(0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return recipe;
+    }
 
     @Override
     public void onDestroy() {
