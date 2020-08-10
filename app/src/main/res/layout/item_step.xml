@@ -34,14 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/item_step_short_description"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/item_step_hidden_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="item_step_long_description,item_step_thumbnail"
-        android:visibility="gone">
 
-    </androidx.constraintlayout.widget.Group>
 
     <ImageView
         android:id="@+id/item_step_visibility_indicator"

@@ -3,13 +3,34 @@ package android.ivo.bake_it.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "ingredient")
 public class Ingredient implements Parcelable {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @ColumnInfo(name = "quantity")
     private double quantity;
 
+    @ColumnInfo(name = "measure")
     private String measure;
 
+    @ColumnInfo(name = "ingredient")
     private String ingredient;
 
+    public Ingredient(int id, double quantity, String measure, String ingredient) {
+        this.id = id;
+        this.quantity = quantity;
+        this.measure = measure;
+        this.ingredient = ingredient;
+    }
+
+    @Ignore
     public Ingredient(double quantity, String measure, String ingredient) {
         this.quantity = quantity;
         this.measure = measure;

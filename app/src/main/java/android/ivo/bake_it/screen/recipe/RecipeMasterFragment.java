@@ -1,7 +1,7 @@
 package android.ivo.bake_it.screen.recipe;
 
 import android.content.Context;
-import android.ivo.bake_it.Bundles;
+import android.ivo.bake_it.BundleKeys;
 import android.ivo.bake_it.api.ApiClientLocal;
 import android.ivo.bake_it.databinding.FragmentRecipeMasterBinding;
 import android.ivo.bake_it.model.Recipe;
@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
+
+import java.util.concurrent.ExecutionException;
 
 public class RecipeMasterFragment extends Fragment implements StepsAdapter.OnViewItemClickListener {
 
@@ -44,8 +46,8 @@ public class RecipeMasterFragment extends Fragment implements StepsAdapter.OnVie
         Bundle extras = getArguments();
 
         if (extras != null) {
-           // Recipe recipe = extras.getParcelable(Bundles.RECIPE_BUNDLE_KEY);
-            Recipe recipe = getRecipeLocal();
+            Recipe recipe = extras.getParcelable(BundleKeys.RECIPE_BUNDLE_KEY);
+          //  Recipe recipe = getRecipeLocal();
             if (recipe != null) {
                 binding.fragmentRecipeTitle.setText(recipe.getName());
                 ingredientsAdapter = new IngredientsAdapter(recipe.getIngredients());
@@ -63,17 +65,17 @@ public class RecipeMasterFragment extends Fragment implements StepsAdapter.OnVie
         return binding.getRoot();
     }
 
-    @org.jetbrains.annotations.Nullable
-    private Recipe getRecipeLocal() {
-        ApiClientLocal apiClientLocal = new ApiClientLocal(requireContext());
-        Recipe recipe = null;
-        try {
-            recipe = apiClientLocal.fetchRecipe(0);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return recipe;
-    }
+//    @org.jetbrains.annotations.Nullable
+//    private Recipe getRecipeLocal() {
+//        ApiClientLocal apiClientLocal = new ApiClientLocal(requireContext());
+//        Recipe recipe = null;
+//        try {
+//            recipe = apiClientLocal.getRecipe(0).get();
+//        } catch (InterruptedException | ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//        return recipe;
+//    }
 
     @Override
     public void onDestroy() {

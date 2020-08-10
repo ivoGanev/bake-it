@@ -1,11 +1,8 @@
 package android.ivo.bake_it.screen.recipe;
 
-import android.ivo.bake_it.Bundles;
-import android.ivo.bake_it.R;
+import android.ivo.bake_it.BundleKeys;
 import android.ivo.bake_it.databinding.FragmentRecipeDetailBinding;
-import android.ivo.bake_it.model.Recipe;
 import android.ivo.bake_it.model.Step;
-import android.ivo.bake_it.screen.main.MainActivity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,16 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.MediaSourceFactory;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-
-import timber.log.Timber;
 
 public class RecipeDetailFragment extends Fragment {
 
@@ -47,7 +40,7 @@ public class RecipeDetailFragment extends Fragment {
         Bundle extras = getArguments();
         binding = FragmentRecipeDetailBinding.inflate(inflater, container, false);
         if (extras != null) {
-            step = extras.getParcelable(Bundles.STEP_BUNDLE_KEY);
+            step = extras.getParcelable(BundleKeys.STEP_BUNDLE_KEY);
             if (step != null) {
                 binding.fragmentRecipeDetailDescription.setText(step.getDescription());
                 initializeExoPlayer();

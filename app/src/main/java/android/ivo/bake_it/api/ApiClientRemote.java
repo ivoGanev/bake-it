@@ -1,7 +1,6 @@
 package android.ivo.bake_it.api;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.ivo.bake_it.model.Recipe;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -99,7 +98,7 @@ public class ApiClientRemote {
                     httpURLConnection.setReadTimeout(READ_TIMEOUT);
 
                     inputStream = httpURLConnection.getInputStream();
-                    jsonString = getStringFromStream(inputStream);
+                    jsonString = jsonStreamToString(inputStream);
 
                     JSONArray recipeJsonArray = new JSONArray(jsonString);
                     ApiObjectMapper apiObjectMapper = new ApiObjectMapper();
@@ -119,7 +118,7 @@ public class ApiClientRemote {
     }
 
     @NotNull
-    private String getStringFromStream(InputStream inputStream) throws IOException {
+    private String jsonStreamToString(InputStream inputStream) throws IOException {
         String jsonToString;
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);

@@ -6,35 +6,41 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-    android:name=".BakeItApplication"
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/app_name"
-    android:roundIcon="@mipmap/ic_launcher_round"
-    android:supportsRtl="true"
-    android:theme="@style/AppTheme">
-    <receiver android:name=".widget.MyAppWidget">
-        <intent-filter>
-            <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-        </intent-filter>
+        android:name=".BakeItApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
-        <meta-data
-            android:name="android.appwidget.provider"
-            android:resource="@xml/my_app_widget_info" />
-    </receiver>
+        <receiver android:name=".widget.MyAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
-    <activity android:name=".screen.recipe.StepActivity" android:parentActivityName=".screen.recipe.RecipeActivity" />
-    <activity android:name=".screen.recipe.RecipeActivity" android:parentActivityName=".screen.main.MainActivity" />
-    <activity android:name=".screen.main.MainActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/my_app_widget_info" />
+        </receiver>
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-    <service android:name=".widget.ListWidgetService"
-        android:permission="android.permission.BIND_REMOTEVIEWS"/>
-</application>
+        <activity
+            android:name=".screen.recipe.StepActivity"
+            android:parentActivityName=".screen.recipe.RecipeActivity" />
+        <activity
+            android:name=".screen.recipe.RecipeActivity"
+            android:parentActivityName=".screen.main.MainActivity" />
+        <activity android:name=".screen.main.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".widget.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+    </application>
 
 </manifest>
