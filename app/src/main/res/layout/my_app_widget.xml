@@ -7,7 +7,7 @@
     android:padding="@dimen/widget_margin">
 
     <TextView
-        android:padding="8dp"
+        android:padding="12dp"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:background="@color/colorPrimary"
@@ -15,6 +15,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Recipe Name" />
+    <TextView
+        android:padding="12dp"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/my_app_widget_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Id" />
 
     <ListView
         android:id="@+id/my_app_widget_lv"

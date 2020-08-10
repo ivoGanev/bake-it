@@ -25,9 +25,23 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
  */
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
-    @Rule
-    public ActivityTestRule<MainActivity> intentsTestRule = new ActivityTestRule<>(MainActivity.class);
 
+    @Rule
+    public ActivityTestRule<MainActivity> activity
+            = new ActivityTestRule<>(MainActivity.class);
+
+    // check if the button we clicked has the same name as the next activity title
+
+    // check if we click on a recipe if the fragment has the steps fragment has the same content
+    // as the master fragment
+
+    // check if we click next and previous buttons will display correct steps
+
+    // check idling resources if we are properly displaying loading indicator
+
+    // check idling resources for correctly retrieving data
+
+    // check recycler view if all the positions are marked with 1,2,3,4
     @Test
     public void selectRecyclerViewAtPosition_CheckStartsCorrectActivity1() {
         onView(withId(R.id.activity_main_rv))

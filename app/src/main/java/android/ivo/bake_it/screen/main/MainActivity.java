@@ -11,14 +11,12 @@ import android.content.Intent;
 import android.ivo.bake_it.BakeItApplication;
 import android.ivo.bake_it.BundleKeys;
 import android.ivo.bake_it.R;
-import android.ivo.bake_it.api.ApiClientRemote;
-import android.ivo.bake_it.database.WidgetDatabaseCache;
 import android.ivo.bake_it.databinding.ActivityMainBinding;
-import android.ivo.bake_it.model.Ingredient;
 import android.ivo.bake_it.model.Recipe;
 import android.ivo.bake_it.screen.recipe.RecipeActivity;
-import android.ivo.bake_it.widget.MyAppWidget;
+import android.ivo.bake_it.widget.MyAppWidgetProvider;
 import android.os.Bundle;
+import android.widget.RemoteViews;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -54,6 +52,8 @@ public class MainActivity extends AppCompatActivity
         }
         mainAdapter = new MainAdapter(recipes, this);
         initRecipeRecyclerView();
+
+        Timber.d("" + getWidgetId());
     }
 
     private void initRecipeRecyclerView() {
@@ -72,17 +72,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRecipeClicked(int position) {
-        boolean parentActivityIsWidget = getWidgetId() != AppWidgetManager.INVALID_APPWIDGET_ID;
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        int widgetId = getWidgetId();
         Intent intent;
+
+        boolean parentActivityIsWidget =getWidgetId() != AppWidgetManager.INVALID_APPWIDGET_ID;
 
         if (parentActivityIsWidget) {
             // Update and close
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-            appWidgetManager.notifyAppWidgetViewDataChanged(getWidgetId(), R.id.my_app_widget_lv);
-            MyAppWidget.updateAppWidget(this,appWidgetManager, getWidgetId(), recipes.get(position).getName(), position);
-
             intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
+            MyAppWidgetProvider.updateAppWidget(this, widgetId, position);
+            finishAffinity();
         } else {
             intent = new Intent(this, RecipeActivity.class);
             Recipe recipe = recipes.get(position);
