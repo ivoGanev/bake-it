@@ -1,6 +1,7 @@
 package android.ivo.bake_it.screen.recipe;
 
 import android.ivo.bake_it.BundleKeys;
+import android.ivo.bake_it.R;
 import android.ivo.bake_it.databinding.FragmentRecipeDetailBinding;
 import android.ivo.bake_it.model.Step;
 import android.net.Uri;
@@ -20,13 +21,15 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-public class RecipeDetailFragment extends Fragment {
+import org.jetbrains.annotations.NotNull;
+
+public class RecipeDetailFragment extends Fragment implements View.OnClickListener {
 
     FragmentRecipeDetailBinding binding;
 
-    Step step;
-
     SimpleExoPlayer exoPlayer;
+
+    OnStepNavigationListener stepNavigationListener;
 
     public static Fragment newInstance(Bundle bundle) {
         RecipeDetailFragment fragment = new RecipeDetailFragment();
@@ -37,40 +40,93 @@ public class RecipeDetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Bundle extras = getArguments();
         binding = FragmentRecipeDetailBinding.inflate(inflater, container, false);
-        if (extras != null) {
-            step = extras.getParcelable(BundleKeys.STEP_BUNDLE_KEY);
-            if (step != null) {
-                binding.fragmentRecipeDetailDescription.setText(step.getDescription());
-                initializeExoPlayer();
-            }
+        initializeExoPlayer();
+
+        if (getArguments() != null) {
+            Step step = getNonNullStep(getArguments());
+            updateUi(getArguments());
+            prepareExoPlayer(step.getVideoURL());
         }
+
         return binding.getRoot();
     }
 
+    private Step getNonNullStep(@NotNull Bundle extras) {
+        Step step = extras.getParcelable(BundleKeys.STEP_BUNDLE_KEY);
+        if (step == null)
+            throw new NullPointerException("The provided step is required to be non-null.");
+        return step;
+    }
+
     private void initializeExoPlayer() {
-        if (step.getVideoURL() != null && !step.getVideoURL().isEmpty()) {
-            exoPlayer = new SimpleExoPlayer.Builder(requireContext()).build();
-            binding.fragmentRecipeDetailExoPlayer.setPlayer(exoPlayer);
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(requireContext(),
-                    Util.getUserAgent(requireContext(), "bake it"));
-            MediaSource mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(Uri.parse(step.getVideoURL()));
-            exoPlayer.prepare(mediaSource);
-        }
+        exoPlayer = new SimpleExoPlayer.Builder(requireContext()).build();
+        binding.fragmentRecipeDetailExoPlayer.setPlayer(exoPlayer);
+    }
+
+    @NotNull
+    private MediaSource toMediaSource(String uriString) {
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(requireContext(),
+                Util.getUserAgent(requireContext(), "bake it"));
+        return new ProgressiveMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(Uri.parse(uriString));
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (exoPlayer != null) {
-            exoPlayer.stop();
             exoPlayer.release();
             exoPlayer = null;
         }
-        binding = null;
-        step = null;
+        if (binding != null) {
+            binding = null;
+        }
+    }
+
+    public void updateUi(@NotNull Bundle stepBundle) {
+        Step step = getNonNullStep(stepBundle);
+        if (binding != null) {
+            binding.fragmentRecipeDetailDescription.setText(step.getDescription());
+            prepareExoPlayer(step.getVideoURL());
+        }
+        else {
+            throw new NullPointerException(RecipeDetailFragment.class.getSimpleName() +
+                    ":  The view binding has not being set yet.");
+        }
+    }
+
+    private void prepareExoPlayer(@NotNull String stringUri) {
+        if(exoPlayer==null)
+            throw new NullPointerException("Make sure the Exo player is initialised before" +
+                    "calling this method");
+        exoPlayer.stop();
+
+        if(stringUri.equals("")) {
+            binding.fragmentRecipeDetailExoPlayer.setPlayer(null);
+            return;
+        }
+        binding.fragmentRecipeDetailExoPlayer.setPlayer(exoPlayer);
+        MediaSource mediaSource = toMediaSource(stringUri);
+        exoPlayer.prepare(mediaSource);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId()==R.id.fragment_recipe_detail_btn_next) {
+            if(stepNavigationListener!=null)
+                stepNavigationListener.onClickNextStep();
+        }
+        else if(view.getId()== R.id.fragment_recipe_detail_btn_prev) {
+            if(stepNavigationListener!=null)
+                stepNavigationListener.onClickPreviousStep();
+        }
+    }
+
+    public interface OnStepNavigationListener
+    {
+        void onClickNextStep();
+        void onClickPreviousStep();
     }
 }
 

@@ -79,17 +79,14 @@ public class MainActivity extends AppCompatActivity
         boolean parentActivityIsWidget =getWidgetId() != AppWidgetManager.INVALID_APPWIDGET_ID;
 
         if (parentActivityIsWidget) {
-            // Update and close
-            intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
             MyAppWidgetProvider.updateAppWidget(this, widgetId, position);
             finishAffinity();
         } else {
             intent = new Intent(this, RecipeActivity.class);
             Recipe recipe = recipes.get(position);
             intent.putExtra(BundleKeys.RECIPE_BUNDLE_KEY, recipe);
+            startActivity(intent);
         }
-        startActivity(intent);
     }
 
     private int getWidgetId() {

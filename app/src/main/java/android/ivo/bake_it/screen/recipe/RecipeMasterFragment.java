@@ -65,18 +65,6 @@ public class RecipeMasterFragment extends Fragment implements StepsAdapter.OnVie
         return binding.getRoot();
     }
 
-//    @org.jetbrains.annotations.Nullable
-//    private Recipe getRecipeLocal() {
-//        ApiClientLocal apiClientLocal = new ApiClientLocal(requireContext());
-//        Recipe recipe = null;
-//        try {
-//            recipe = apiClientLocal.getRecipe(0).get();
-//        } catch (InterruptedException | ExecutionException e) {
-//            e.printStackTrace();
-//        }
-//        return recipe;
-//    }
-
     @Override
     public void onDestroy() {
         binding = null;
