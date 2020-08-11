@@ -13,13 +13,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:textSize="22sp"
         android:id="@+id/fragment_recipe_detail_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_recipe_detail_btn_next"
         app:layout_constraintEnd_toEndOf="@+id/fragment_recipe_detail_exoPlayer"
         app:layout_constraintStart_toStartOf="@+id/fragment_recipe_detail_exoPlayer"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_recipe_detail_exoPlayer"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_recipe_detail_current_page"
         tools:text="description" />
 
     <Button
@@ -32,7 +36,7 @@
         app:layout_constraintEnd_toStartOf="@+id/fragment_recipe_detail_btn_next"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Prev" />
+        android:text="@string/fragment_recipe_details_btn_prev" />
 
     <Button
         android:id="@+id/fragment_recipe_detail_btn_next"
@@ -44,6 +48,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/fragment_recipe_detail_btn_prev"
-        tools:text="Next Step" />
+        android:text="@string/fragment_recipe_details_btn_next" />
+
+    <TextView
+        android:id="@+id/fragment_recipe_detail_current_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-condensed-light"
+        tools:text="1."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_recipe_detail_exoPlayer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

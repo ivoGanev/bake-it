@@ -16,25 +16,6 @@
         app:layout_constraintTop_toTopOf="@+id/item_step_visibility_indicator"
         tools:text="Short Description" />
 
-    <TextView
-        android:id="@+id/item_step_long_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/item_step_thumbnail"
-        app:layout_constraintTop_toBottomOf="@+id/item_step_thumbnail"
-        tools:text="Long Description" />
-
-    <ImageView
-        android:id="@+id/item_step_thumbnail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/item_step_short_description"
-        app:layout_constraintTop_toBottomOf="@+id/item_step_short_description"
-        tools:srcCompat="@tools:sample/avatars" />
-
-
 
     <ImageView
         android:id="@+id/item_step_visibility_indicator"
@@ -44,5 +25,5 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_unfold_more_24" />
+        app:srcCompat="@drawable/ic_baseline_arrow_forward_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

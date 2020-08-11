@@ -56,8 +56,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="16dp"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_recipe_master_steps" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_recipe_master_steps"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/fragment_recipe_master_steps"

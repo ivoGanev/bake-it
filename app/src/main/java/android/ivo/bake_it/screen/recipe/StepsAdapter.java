@@ -43,13 +43,6 @@ class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
         Step step = steps.get(position);
 
         holder.binding.itemStepShortDescription.setText(position + ") " + step.getShortDescription());
-        if (position != 0) {
-            String longDescription = step.getDescription();
-            if (longDescription.startsWith(position + ". "))
-                longDescription = longDescription.replaceFirst(position + ". ", "");
-
-            holder.binding.itemStepLongDescription.setText(longDescription);
-        }
 
         HttpMediaFormat httpMediaFormat = new HttpMediaFormat(step.getThumbnailURL());
         if (httpMediaFormat.getFormat() == HttpMediaFormat.MP4) {
