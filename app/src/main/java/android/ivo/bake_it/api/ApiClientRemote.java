@@ -52,7 +52,7 @@ public class ApiClientRemote {
         // if the user has internet connection should be enough.
         if (isConnectedToNetwork()) {
             if (onConnectedListener != null)
-                onConnectedListener.onConnected();
+                onConnectedListener.onConnect();
         }
     }
     private static boolean isConnectedToNetwork() {
@@ -135,6 +135,7 @@ public class ApiClientRemote {
     }
 
     public interface OnConnectedListener {
-        void onConnected();
+        void onConnect();
     }
+
 }

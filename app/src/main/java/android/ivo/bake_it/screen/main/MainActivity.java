@@ -11,13 +11,16 @@ import android.content.Intent;
 import android.ivo.bake_it.BakeItApplication;
 import android.ivo.bake_it.BundleKeys;
 import android.ivo.bake_it.R;
+import android.ivo.bake_it.api.ApiClientLocal;
 import android.ivo.bake_it.databinding.ActivityMainBinding;
 import android.ivo.bake_it.model.Recipe;
 import android.ivo.bake_it.screen.recipe.RecipeActivity;
+import android.ivo.bake_it.threading.AppExecutors;
 import android.ivo.bake_it.widget.MyAppWidgetProvider;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -38,22 +41,28 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        recipes = new ArrayList<>();
         Timber.d("-------------------------------");
         Timber.d("Connected to remote host");
         Timber.d("-------------------------------");
-        try {
-            BakeItApplication bakeItApplication = (BakeItApplication) getApplication();
-            Future<List<Recipe>> allRecipes = bakeItApplication.getApiClient().getRecipes();
-            // TODO: run allRecipes.get() on another thread and then post in on the UI thread
-            recipes = allRecipes.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        mainAdapter = new MainAdapter(recipes, this);
-        initRecipeRecyclerView();
+//        try {
+//            BakeItApplication bakeItApplication = (BakeItApplication) getApplication();
+//            Future<List<Recipe>> allRecipes = bakeItApplication.getApiClient().getRecipes();
+//            // TODO: run allRecipes.get() on another thread and then post in on the UI thread
+//            recipes = allRecipes.get();
+//        } catch (InterruptedException | ExecutionException e) {
+//            e.printStackTrace();
+//        }
+        BakeItApplication bakeItApplication = (BakeItApplication) getApplication();
+        ApiClientLocal localClient = (ApiClientLocal) bakeItApplication.getApiClient();
 
-        Timber.d("" + getWidgetId());
+        localClient.getRecipes(recipes -> {
+            this.recipes.addAll(recipes);
+            mainAdapter.update(this.recipes);
+        });
+
+        mainAdapter = new MainAdapter(new ArrayList<>(), this);
+        initRecipeRecyclerView();
     }
 
     private void initRecipeRecyclerView() {
@@ -76,7 +85,7 @@ public class MainActivity extends AppCompatActivity
         int widgetId = getWidgetId();
         Intent intent;
 
-        boolean parentActivityIsWidget =getWidgetId() != AppWidgetManager.INVALID_APPWIDGET_ID;
+        boolean parentActivityIsWidget = getWidgetId() != AppWidgetManager.INVALID_APPWIDGET_ID;
 
         if (parentActivityIsWidget) {
             MyAppWidgetProvider.updateAppWidget(this, widgetId, position);

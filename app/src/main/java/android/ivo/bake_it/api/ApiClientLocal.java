@@ -13,57 +13,74 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class ApiClientLocal extends  ApiClient {
-    public static final String FILE_NAME = "baking.json";
+import timber.log.Timber;
 
-    public ApiClientLocal(OnConnectedListener onConnectedListener, Context contextWeakReference) {
-        super(onConnectedListener, contextWeakReference);
+public class ApiClientLocal extends ContextWrapper implements ApiClient {
+    public static final String FILE_NAME = "baking.json";
+    private AppExecutors executors;
+
+    public ApiClientLocal(Context base, AppExecutors executors) {
+        super(base);
+        this.executors = executors;
     }
 
-    private List<Recipe> fetchRecipes() throws JSONException {
-        JSONArray recipeJsonArray = new JSONArray(jsonLocalResponse(FILE_NAME));
+    private List<Recipe> readRecipes() throws JSONException {
+        JSONArray recipeJsonArray = new JSONArray(jsonLocalResponse());
         ApiObjectMapper apiObjectMapper = new ApiObjectMapper();
         return apiObjectMapper.readRecipes(recipeJsonArray);
     }
 
-    private Recipe fetchRecipe(int index) throws JSONException {
-        JSONArray recipeJsonArray = new JSONArray(jsonLocalResponse(FILE_NAME));
+    private Recipe readRecipe(int index) throws JSONException {
+        JSONArray recipeJsonArray = new JSONArray(jsonLocalResponse());
         ApiObjectMapper apiObjectMapper = new ApiObjectMapper();
         return apiObjectMapper.readRecipe(recipeJsonArray.getJSONObject(index));
     }
 
-
+    /**
+     * This method posts the listener's result on the main ui thread
+     * */
     @Override
-    public Future<List<Recipe>> getRecipes() {
-        AppExecutors appExecutors = AppExecutors.getInstance();
-        Callable<List<Recipe>> callable = new Callable<List<Recipe>>() {
-            @Override
-            public List<Recipe> call() throws Exception {
-                return fetchRecipes();
+    public void getRecipes(OnRecipesRetrievedListener listener) {
+        executors.getDiskIOExecutor().execute(() -> {
+            List<Recipe> recipes;
+            try {
+                recipes = readRecipes();
+                executors.getMainThread().execute(() ->
+                {
+                    listener.onRecipesRetrieved(recipes);
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        };
-        return appExecutors.getNetworkExecutor().submit(callable);
+        });
     }
 
+    /**
+     * This method posts the listener's result on the main ui thread
+     * */
     @Override
-    public Future<Recipe> getRecipe(final int index) {
-        AppExecutors appExecutors = AppExecutors.getInstance();
-        Callable<Recipe> callable = new Callable<Recipe>() {
-            @Override
-            public Recipe call() throws Exception {
-                return fetchRecipe(index);
+    public void getRecipe(OnRecipeRetrievedListener listener, final int position) {
+        executors.getDiskIOExecutor().execute(() -> {
+            Recipe recipe;
+            try {
+                recipe = readRecipe(position);
+                executors.getMainThread().execute(() ->
+                {
+                    listener.onRecipeRetrieved(recipe);
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        };
-        return appExecutors.getNetworkExecutor().submit(callable);
+        });
     }
 
-    private String jsonLocalResponse(String file) {
+    private String jsonLocalResponse() {
         AssetManager assets = getBaseContext().getAssets();
         StringBuilder jsonLocalResponse = new StringBuilder();
         try {

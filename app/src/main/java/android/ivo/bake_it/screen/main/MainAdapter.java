@@ -11,7 +11,12 @@ import android.widget.AdapterView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private List<Recipe> recipes;
@@ -20,6 +25,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     public MainAdapter(List<Recipe> recipes, OnViewItemClickedListener onItemClickListener) {
         this.recipes = recipes;
         this.onViewItemClickedListener = onItemClickListener;
+    }
+
+    public void update(List<Recipe> recipes)
+    {
+        if(this.recipes!=null) {
+            this.recipes.clear();
+            this.recipes.addAll(recipes);
+            notifyDataSetChanged();
+        }
     }
 
     @NonNull

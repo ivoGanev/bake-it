@@ -3,26 +3,24 @@ package android.ivo.bake_it;
 import android.app.Application;
 import android.ivo.bake_it.api.ApiClient;
 import android.ivo.bake_it.api.ApiClientLocal;
+import android.ivo.bake_it.threading.AppExecutors;
 
 import timber.log.Timber;
 
-public class BakeItApplication extends Application implements ApiClient.OnConnectedListener {
+public class BakeItApplication extends Application {
 
     private ApiClient apiClient;
 
     @Override
-    public void onConnect() {
-
-    }
-
-    @Override
     public void onCreate() {
-        apiClient = new ApiClientLocal(this, getBaseContext());
-        apiClient.connect();
+        AppExecutors appExecutors = AppExecutors.getInstance();
+        apiClient = new ApiClientLocal(this, appExecutors);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
 
         super.onCreate();
-        if (BuildConfig.DEBUG)
-            Timber.plant(new Timber.DebugTree());
     }
 
     public ApiClient getApiClient() {
