@@ -2,11 +2,14 @@ package android.ivo.bake_it.api;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.ivo.bake_it.idlingresource.SimpleIdlingResource;
 import android.ivo.bake_it.model.Recipe;
 import android.ivo.bake_it.threading.AppExecutors;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.PrecomputedText;
+
+import androidx.test.espresso.IdlingResource;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -33,11 +36,13 @@ public class ApiClientRemote extends ContextWrapper implements ApiClient {
 
     private OnConnectedListener onConnectedListener;
     private AppExecutors appExecutors;
+    private SimpleIdlingResource idlingResource;
 
-    public ApiClientRemote(Context base, AppExecutors appExecutors, OnConnectedListener listener) {
+    public ApiClientRemote(Context base, AppExecutors appExecutors, OnConnectedListener onConnectedListener, SimpleIdlingResource idlingResource) {
         super(base);
         this.appExecutors = appExecutors;
-        onConnectedListener = listener;
+        this.onConnectedListener = onConnectedListener;
+        this.idlingResource = idlingResource;
     }
 
     private static URL getCleanUrl() {
@@ -80,11 +85,18 @@ public class ApiClientRemote extends ContextWrapper implements ApiClient {
 
         Callable<List<Recipe>> callable = () -> readRecipes(url);
         Future<List<Recipe>> future = appExecutors.getNetworkExecutor().submit(callable);
-
+        if(idlingResource!=null) {
+            idlingResource.setIdle(false);
+        }
         appExecutors.getNetworkExecutor().execute(() -> {
-            if(listener!=null) {
+            if (listener != null) {
                 try {
                     List<Recipe> recipes = future.get();
+
+                    // IdlingResource - non-production code
+                    if(idlingResource!=null) {
+                        idlingResource.setIdle(true);
+                    }
                     appExecutors.getMainThread().execute(() -> {
                         listener.onRecipesRetrieved(recipes);
                     });
@@ -97,7 +109,7 @@ public class ApiClientRemote extends ContextWrapper implements ApiClient {
 
     /**
      * This method posts the listener's result on the MainThread
-     * */
+     */
     @Override
     public void getRecipe(OnRecipeRetrievedListener listener, int position) {
         final URL url = getCleanUrl();
@@ -105,11 +117,21 @@ public class ApiClientRemote extends ContextWrapper implements ApiClient {
         Callable<List<Recipe>> callable = () -> readRecipes(url);
         Future<List<Recipe>> future = appExecutors.getNetworkExecutor().submit(callable);
 
+        if(idlingResource!=null) {
+            idlingResource.setIdle(false);
+        }
+
         appExecutors.getNetworkExecutor().execute(() -> {
-            if(listener!=null) {
+            if (listener != null) {
                 try {
                     List<Recipe> recipes = future.get();
                     Recipe recipe = recipes.get(position);
+
+                    // IdlingResource - non-production code
+                    if(idlingResource!=null) {
+                        idlingResource.setIdle(true);
+                    }
+
                     appExecutors.getMainThread().execute(() -> {
                         listener.onRecipeRetrieved(recipe);
                     });
@@ -122,7 +144,7 @@ public class ApiClientRemote extends ContextWrapper implements ApiClient {
 
     /**
      * This method posts the listener's result on the MainThread
-     * */
+     */
     @NotNull
     private List<Recipe> readRecipes(URL url) {
         HttpURLConnection httpURLConnection;

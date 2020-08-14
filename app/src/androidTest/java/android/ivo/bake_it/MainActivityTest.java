@@ -1,24 +1,19 @@
 package android.ivo.bake_it;
 
-import android.app.Activity;
 import android.ivo.bake_it.screen.main.MainActivity;
 
-import androidx.lifecycle.Lifecycle;
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.IdlingResource;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.ivo.bake_it.matchers.ViewMatcher.atPosition;
-import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
@@ -30,13 +25,29 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
     @Rule
-    public ActivityScenarioRule<MainActivity> activity
+    public ActivityScenarioRule<MainActivity> activityScenario
             = new ActivityScenarioRule<>(MainActivity.class);
+    IdlingResource idlingResource;
+
+    @Before
+    public void registerIdlingResource() {
+        activityScenario.getScenario().onActivity(activity ->
+        {
+            BakeItApplication application = (BakeItApplication) activity.getApplication();
+            idlingResource = application.getIdlingResource();
+            IdlingRegistry.getInstance().register(idlingResource);
+        });
+    }
 
     @Test
-    public void hello()
-    {
+    public void hello() {
 
+    }
+
+    @After
+    public void unregisterIdlingResource() {
+        if (idlingResource != null)
+            IdlingRegistry.getInstance().unregister(idlingResource);
     }
     // check if the button we clicked has the same name as the next activity title
 
