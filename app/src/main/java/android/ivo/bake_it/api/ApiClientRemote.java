@@ -55,30 +55,6 @@ public class ApiClientRemote extends ContextWrapper implements ApiClient {
         return result;
     }
 
-    public void connect() {
-        // we are querying just a simple json from a static address so triggering onConnected() only
-        // if the user has internet connection should be enough.
-        if (isConnectedToNetwork()) {
-            if (onConnectedListener != null)
-                onConnectedListener.onConnect();
-        }
-    }
-
-    private boolean isConnectedToNetwork() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getBaseContext()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        if (connectivityManager != null) {
-            NetworkInfo[] allNetworkInfo = connectivityManager.getAllNetworkInfo();
-            for (NetworkInfo networkInfo : allNetworkInfo) {
-                if (networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     @Override
     public void getRecipes(OnRecipesRetrievedListener listener) {
         final URL url = getCleanUrl();
