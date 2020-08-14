@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.ivo.bake_it.BakeItApplication;
 import android.ivo.bake_it.BundleKeys;
 import android.ivo.bake_it.R;
+import android.ivo.bake_it.api.ApiClient;
 import android.ivo.bake_it.api.ApiClientLocal;
 import android.ivo.bake_it.databinding.ActivityMainBinding;
 import android.ivo.bake_it.model.Recipe;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity
 //            e.printStackTrace();
 //        }
         BakeItApplication bakeItApplication = (BakeItApplication) getApplication();
-        ApiClientLocal localClient = (ApiClientLocal) bakeItApplication.getApiClient();
+        ApiClient localClient =  bakeItApplication.getApiClient();
 
         localClient.getRecipes(recipes -> {
             this.recipes.addAll(recipes);

@@ -43,7 +43,7 @@ public class ApiClientLocal extends ContextWrapper implements ApiClient {
     }
 
     /**
-     * This method posts the listener's result on the main ui thread
+     * This method posts the listener's result on the MainThread
      * */
     @Override
     public void getRecipes(OnRecipesRetrievedListener listener) {
@@ -62,7 +62,7 @@ public class ApiClientLocal extends ContextWrapper implements ApiClient {
     }
 
     /**
-     * This method posts the listener's result on the main ui thread
+     * This method posts the listener's result on the MainThread
      * */
     @Override
     public void getRecipe(OnRecipeRetrievedListener listener, final int position) {

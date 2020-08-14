@@ -1,8 +1,12 @@
 package android.ivo.bake_it;
 
+import android.app.Activity;
 import android.ivo.bake_it.screen.main.MainActivity;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
@@ -25,11 +29,15 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
  */
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
-
     @Rule
-    public ActivityTestRule<MainActivity> activity
-            = new ActivityTestRule<>(MainActivity.class);
+    public ActivityScenarioRule<MainActivity> activity
+            = new ActivityScenarioRule<>(MainActivity.class);
 
+    @Test
+    public void hello()
+    {
+
+    }
     // check if the button we clicked has the same name as the next activity title
 
     // check if we click on a recipe if the fragment has the steps fragment has the same content
@@ -42,22 +50,5 @@ public class MainActivityTest {
     // check idling resources for correctly retrieving data
 
     // check recycler view if all the positions are marked with 1,2,3,4
-    @Test
-    public void selectRecyclerViewAtPosition_CheckStartsCorrectActivity1() {
-        onView(withId(R.id.activity_main_rv))
-                .perform(RecyclerViewActions.scrollToPosition(0))
-                .check(matches(atPosition(0, hasDescendant(withText("Nutella Pie")))))
-                .perform(click());
-
-        onView(withId(R.id.fragment_recipe_title)).check(matches(withText("Nutella Pie")));
-    }
-    @Test
-    public void selectRecyclerViewAtPosition_CheckStartsCorrectActivity2() {
-        onView(withId(R.id.activity_main_rv))
-                .perform(RecyclerViewActions.scrollToPosition(1))
-                .perform(click());
-
-        onView(withId(R.id.fragment_recipe_title)).check(matches(withText("Nutella Pie")));
-    }
 
 }
