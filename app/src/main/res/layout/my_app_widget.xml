@@ -15,14 +15,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Recipe Name" />
+
     <TextView
-        android:padding="12dp"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:background="@color/colorPrimary"
-        android:id="@+id/my_app_widget_id"
+        android:id="@+id/my_app_widget_click_to_change"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="12dp"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
         tools:text="Id" />
 
     <ListView

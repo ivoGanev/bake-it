@@ -30,17 +30,11 @@ public class MainActivity extends AppCompatActivity
     public static final int VISIBILITY_NO_NETWORK = 1;
     public static final int VISIBILITY_LOADING_API_DATA = 2;
     public static final int VISIBILITY_API_DATA_LOADED = 3;
+    public static final int VISIBILITY_WIDGET_UI = 4;
 
     public static final String RECIPE_BUNDLE_KEY = "android.ivo.bake_it.bundle_keys.recipe";
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({VISIBILITY_NO_NETWORK, VISIBILITY_LOADING_API_DATA, VISIBILITY_API_DATA_LOADED})
-    @interface UiVisibilityState{}
-
     ActivityMainBinding binding;
-
     MainAdapter mainAdapter;
-
     List<Recipe> recipes;
 
     @Override
@@ -49,14 +43,13 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         recipes = new ArrayList<>();
         setContentView(binding.getRoot());
-        
+
         BakeItApplication bakeItApplication = (BakeItApplication) getApplication();
         ApiClient localClient = bakeItApplication.getApiClient();
 
-        if(!NetworkUtils.isConnectedToNetwork(this)) {
+        if (!NetworkUtils.isConnectedToNetwork(this)) {
             setUiVisibilityState(VISIBILITY_NO_NETWORK);
-        }
-        else {
+        } else {
             setUiVisibilityState(VISIBILITY_LOADING_API_DATA);
         }
 
@@ -68,22 +61,30 @@ public class MainActivity extends AppCompatActivity
             setUiVisibilityState(VISIBILITY_API_DATA_LOADED);
         });
 
+        boolean parentActivityIsWidget = getWidgetId() != AppWidgetManager.INVALID_APPWIDGET_ID;
+        if (parentActivityIsWidget) {
+            setUiVisibilityState(VISIBILITY_WIDGET_UI);
+        }
+
         mainAdapter = new MainAdapter(new ArrayList<>(), this);
         initRecipeRecyclerView();
     }
 
     private void setUiVisibilityState(@UiVisibilityState int state) {
-        if(state==VISIBILITY_NO_NETWORK) {
+        if (state == VISIBILITY_NO_NETWORK) {
             binding.activityMainTvNoNetwork.setVisibility(View.VISIBLE);
             binding.activityMainPb.setVisibility(View.GONE);
             binding.activityMainRv.setVisibility(View.GONE);
-        }
-        else if(state==VISIBILITY_LOADING_API_DATA) {
+        } else if (state == VISIBILITY_LOADING_API_DATA) {
             binding.activityMainPb.setVisibility(View.VISIBLE);
             binding.activityMainTvNoNetwork.setVisibility(View.GONE);
             binding.activityMainRv.setVisibility(View.GONE);
-        }
-        else if(state== VISIBILITY_API_DATA_LOADED) {
+        } else if (state == VISIBILITY_API_DATA_LOADED) {
+            binding.activityMainRv.setVisibility(View.VISIBLE);
+            binding.activityMainPb.setVisibility(View.GONE);
+            binding.activityMainTvNoNetwork.setVisibility(View.GONE);
+        } else if (state == VISIBILITY_WIDGET_UI) {
+            binding.activityMainWidgetSelectTv.setVisibility(View.VISIBLE);
             binding.activityMainRv.setVisibility(View.VISIBLE);
             binding.activityMainPb.setVisibility(View.GONE);
             binding.activityMainTvNoNetwork.setVisibility(View.GONE);
@@ -124,5 +125,14 @@ public class MainActivity extends AppCompatActivity
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
         return AppWidgetManager.INVALID_APPWIDGET_ID;
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+            VISIBILITY_NO_NETWORK,
+            VISIBILITY_LOADING_API_DATA,
+            VISIBILITY_API_DATA_LOADED,
+            VISIBILITY_WIDGET_UI})
+    @interface UiVisibilityState {
     }
 }

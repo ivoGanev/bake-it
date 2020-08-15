@@ -28,9 +28,9 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.my_app_widget);
 
-        remoteViews.setOnClickPendingIntent(R.id.my_app_widget_recipe_name, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.my_app_widget_click_to_change, pendingIntent);
         remoteViews.setTextViewText(R.id.my_app_widget_recipe_name, recipeName);
-        remoteViews.setTextViewText(R.id.my_app_widget_id, "Id: " + widgetId);
+        remoteViews.setTextViewText(R.id.my_app_widget_click_to_change, "Click to change the recipe");
         remoteViews.setEmptyView(R.id.my_app_widget_lv, R.id.my_widget_list_empty);
         return remoteViews;
     }

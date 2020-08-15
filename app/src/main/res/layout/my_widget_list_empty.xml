@@ -11,7 +11,7 @@
         android:id="@+id/my_widget_list_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Click to add recipe!"
+        android:text="@string/click_to_add_recipe"
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="291dp" />
 </RelativeLayout>
