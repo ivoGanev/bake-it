@@ -1,7 +1,7 @@
 package android.ivo.bake_it.screen.recipe;
 
 import android.content.Context;
-import android.ivo.bake_it.BundleKeys;
+import android.ivo.bake_it.BakeItApplication;
 import android.ivo.bake_it.R;
 import android.ivo.bake_it.databinding.FragmentRecipeDetailBinding;
 import android.ivo.bake_it.model.Step;
@@ -56,14 +56,19 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRecipeDetailBinding.inflate(inflater, container, false);
-        binding.fragmentRecipeDetailBtnNext.setOnClickListener(this);
-        binding.fragmentRecipeDetailBtnPrev.setOnClickListener(this);
+        if (binding.fragmentRecipeDetailBtnNext != null) {
+            binding.fragmentRecipeDetailBtnNext.setOnClickListener(this);
+        }
+        if (binding.fragmentRecipeDetailBtnPrev != null) {
+            binding.fragmentRecipeDetailBtnPrev.setOnClickListener(this);
+        }
 
         initializeExoPlayer();
 
-        if (getArguments() != null) {
-            Step step = getNonNullStep(getArguments());
-            updateUi(getArguments());
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            Step step = getNonNullStep(arguments);
+            updateUi(arguments);
             prepareExoPlayer(step.getVideoURL());
         }
 
@@ -71,9 +76,9 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     }
 
     private Step getNonNullStep(@NotNull Bundle extras) {
-        Step step = extras.getParcelable(BundleKeys.STEP_BUNDLE_KEY);
+        Step step = extras.getParcelable(StepActivity.STEP_BUNDLE_KEY);
         if (step == null)
-            throw new NullPointerException("The provided step is required to be non-null.");
+             throw new NullPointerException("The provided step is required to be non-null.");
         return step;
     }
 
@@ -106,9 +111,13 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         setArguments(stepBundle);
         Step step = getNonNullStep(stepBundle);
         if (binding != null) {
-            int currentPage = stepBundle.getInt(BundleKeys.STEP_DETAILS_CURRENT_PAGE);
-            binding.fragmentRecipeDetailCurrentPage.setText("" + currentPage);
-            binding.fragmentRecipeDetailDescription.setText(step.getDescription());
+            int currentPage = stepBundle.getInt(StepActivity.CURRENT_STEP_PAGE);
+            if (binding.fragmentRecipeDetailCurrentPage != null) {
+                binding.fragmentRecipeDetailCurrentPage.setText("" + currentPage);
+            }
+            if (binding.fragmentRecipeDetailDescription != null) {
+                binding.fragmentRecipeDetailDescription.setText(step.getDescription());
+            }
             prepareExoPlayer(step.getVideoURL());
         } else {
             throw new NullPointerException(RecipeDetailFragment.class.getSimpleName() +
@@ -127,6 +136,11 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
             return;
         }
         binding.fragmentRecipeDetailExoPlayer.setPlayer(exoPlayer);
+        BakeItApplication application = (BakeItApplication)requireContext().getApplicationContext();
+        if(application.deviceIsInLandscapeMode()) {
+            binding.fragmentRecipeDetailExoPlayer.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }
         MediaSource mediaSource = toMediaSource(stringUri);
         exoPlayer.prepare(mediaSource);
     }
@@ -137,7 +151,7 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
             Timber.e("Step bundle cannot be null.");
             return;
         }
-        int currentPage = getArguments().getInt(BundleKeys.STEP_DETAILS_CURRENT_PAGE);
+        int currentPage = getArguments().getInt(StepActivity.CURRENT_STEP_PAGE);
 
         if (view.getId() == R.id.fragment_recipe_detail_btn_next) {
             if (stepNavigationListener != null)

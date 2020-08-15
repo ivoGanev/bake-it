@@ -1,12 +1,9 @@
 package android.ivo.bake_it;
 
-import android.content.Context;
 import android.ivo.bake_it.idlingresource.SimpleIdlingResource;
 import android.ivo.bake_it.screen.main.MainActivity;
-import android.net.wifi.WifiManager;
 
 import androidx.test.espresso.IdlingRegistry;
-import androidx.test.espresso.IdlingResource;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -51,7 +48,7 @@ public class MainActivityTest {
     @Test
     public void uiIsVisible_WhenDataIsLoaded() {
         onView(withId(R.id.activity_main_tv_no_network)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.activity_main_progress_bar)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.activity_main_pb)).check(matches(not(isDisplayed())));
         onView(withId(R.id.activity_main_rv)).check(matches(isDisplayed()));
     }
 

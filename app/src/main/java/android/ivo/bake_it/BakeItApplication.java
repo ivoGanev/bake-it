@@ -22,7 +22,7 @@ public class BakeItApplication extends Application {
 
     @VisibleForTesting
     public SimpleIdlingResource getIdlingResource() {
-        if(idlingResource==null)
+        if (idlingResource == null)
             idlingResource = new SimpleIdlingResource();
         return idlingResource;
     }
@@ -47,6 +47,10 @@ public class BakeItApplication extends Application {
 
     public boolean deviceIsTablet() {
         return getResources().getBoolean(R.bool.isTablet);
+    }
+
+    public boolean deviceIsInLandscapeMode() {
+        return getResources().getBoolean(R.bool.isLandscape);
     }
 
 }

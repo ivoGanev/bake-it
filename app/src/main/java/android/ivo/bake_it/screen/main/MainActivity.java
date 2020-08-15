@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.ivo.bake_it.BakeItApplication;
-import android.ivo.bake_it.BundleKeys;
+import android.ivo.bake_it.R;
 import android.ivo.bake_it.api.ApiClient;
 import android.ivo.bake_it.api.NetworkUtils;
 import android.ivo.bake_it.databinding.ActivityMainBinding;
@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity
     public static final int VISIBILITY_LOADING_API_DATA = 2;
     public static final int VISIBILITY_API_DATA_LOADED = 3;
 
+    public static final String RECIPE_BUNDLE_KEY = "android.ivo.bake_it.bundle_keys.recipe";
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({VISIBILITY_NO_NETWORK, VISIBILITY_LOADING_API_DATA, VISIBILITY_API_DATA_LOADED})
     @interface UiVisibilityState{}
@@ -38,27 +40,24 @@ public class MainActivity extends AppCompatActivity
     ActivityMainBinding binding;
 
     MainAdapter mainAdapter;
-    List<Recipe> recipes;
 
-    onUiVisibilityChangeListener onUiVisibilityChangeListener;
+    List<Recipe> recipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
         recipes = new ArrayList<>();
-
+        setContentView(binding.getRoot());
+        
         BakeItApplication bakeItApplication = (BakeItApplication) getApplication();
         ApiClient localClient = bakeItApplication.getApiClient();
 
         if(!NetworkUtils.isConnectedToNetwork(this)) {
             setUiVisibilityState(VISIBILITY_NO_NETWORK);
-            notifyOnUiVisibilityListeners(VISIBILITY_NO_NETWORK);
         }
         else {
             setUiVisibilityState(VISIBILITY_LOADING_API_DATA);
-            notifyOnUiVisibilityListeners(VISIBILITY_LOADING_API_DATA);
         }
 
         // results automatically comes in the MainThread
@@ -67,7 +66,6 @@ public class MainActivity extends AppCompatActivity
             mainAdapter.update(this.recipes);
 
             setUiVisibilityState(VISIBILITY_API_DATA_LOADED);
-            notifyOnUiVisibilityListeners(VISIBILITY_API_DATA_LOADED);
         });
 
         mainAdapter = new MainAdapter(new ArrayList<>(), this);
@@ -77,26 +75,20 @@ public class MainActivity extends AppCompatActivity
     private void setUiVisibilityState(@UiVisibilityState int state) {
         if(state==VISIBILITY_NO_NETWORK) {
             binding.activityMainTvNoNetwork.setVisibility(View.VISIBLE);
-            binding.activityMainProgressBar.setVisibility(View.GONE);
+            binding.activityMainPb.setVisibility(View.GONE);
             binding.activityMainRv.setVisibility(View.GONE);
         }
         else if(state==VISIBILITY_LOADING_API_DATA) {
-            binding.activityMainProgressBar.setVisibility(View.VISIBLE);
+            binding.activityMainPb.setVisibility(View.VISIBLE);
             binding.activityMainTvNoNetwork.setVisibility(View.GONE);
             binding.activityMainRv.setVisibility(View.GONE);
         }
         else if(state== VISIBILITY_API_DATA_LOADED) {
             binding.activityMainRv.setVisibility(View.VISIBLE);
-            binding.activityMainProgressBar.setVisibility(View.GONE);
+            binding.activityMainPb.setVisibility(View.GONE);
             binding.activityMainTvNoNetwork.setVisibility(View.GONE);
         }
     }
-
-    private void notifyOnUiVisibilityListeners(@UiVisibilityState int state) {
-        if(onUiVisibilityChangeListener!=null)
-            onUiVisibilityChangeListener.onVisibilityChange(state);
-    }
-
 
     private void initRecipeRecyclerView() {
         RecyclerView recyclerView = binding.activityMainRv;
@@ -119,7 +111,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             Intent intent = new Intent(this, RecipeActivity.class);
             Recipe recipe = recipes.get(position);
-            intent.putExtra(BundleKeys.RECIPE_BUNDLE_KEY, recipe);
+            intent.putExtra(RECIPE_BUNDLE_KEY, recipe);
             startActivity(intent);
         }
     }
@@ -132,10 +124,5 @@ public class MainActivity extends AppCompatActivity
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
         return AppWidgetManager.INVALID_APPWIDGET_ID;
-    }
-
-    public interface onUiVisibilityChangeListener
-    {
-        void onVisibilityChange(@UiVisibilityState int uiVisibilityState);
     }
 }
