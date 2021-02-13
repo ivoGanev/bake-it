@@ -84,4 +84,8 @@ public class StepActivity extends AppCompatActivity implements RecipeDetailFragm
             throw new NullPointerException("The recipe can't be null");
         return recipe;
     }
+
+    // TODO(Fix Bug): Software back button displays an empty activity
+    // TODO(Fix UI): Place the ExoPlayer on top of the activity
+    // TODO(Fix UI): If there is no video display it as a message to the user
 }
