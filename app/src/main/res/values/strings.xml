@@ -8,4 +8,5 @@
     <string name="select_recipe_to_display">Select Recipe to Display</string>
     <string name="no_network_connection">No Network Connection!</string>
     <string name="click_to_add_recipe">Click to add recipe!</string>
+    <string name="no_video_for_this_step">No video for this step :(</string>
 </resources>

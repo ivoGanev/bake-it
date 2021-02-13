@@ -5,7 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@color/black"
+        android:gravity="center"
+        android:text="@string/no_video_for_this_step"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <com.google.android.exoplayer2.ui.PlayerView
+        tools:visibility="gone"
         android:background="@color/black"
         android:id="@+id/fragment_recipe_detail_exoPlayer"
         android:layout_width="match_parent"
@@ -56,11 +69,11 @@
         android:id="@+id/fragment_recipe_detail_current_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
         android:fontFamily="sans-serif-condensed-light"
-        tools:text="1."
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_recipe_detail_exoPlayer" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:text="1." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
