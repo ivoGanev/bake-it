@@ -1,7 +1,7 @@
 # bake-it
 
 ## Motivation
-Bake-it is an Android app programmed in Java, created for personal self-develpment and exploration of design and programming practices including:
+Bake-it is an Android app programmed in Java, created for personal self-develpment and exploration of design and programming practices for the Android OS including:
 
 - [x] Building a Widget for the home screen.
 - [x] Utilizing ExoPlayer to display videos from an API.
