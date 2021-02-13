@@ -96,7 +96,7 @@ public class ApiClientRemote extends ContextWrapper implements ApiClient {
         if(idlingResource!=null) {
             idlingResource.setIdle(false);
         }
-
+        
         appExecutors.getNetworkExecutor().execute(() -> {
             if (listener != null) {
                 try {
