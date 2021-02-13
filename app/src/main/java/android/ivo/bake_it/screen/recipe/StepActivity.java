@@ -15,15 +15,14 @@ public class StepActivity extends AppCompatActivity implements RecipeDetailFragm
 
     public static final String STEP_BUNDLE_KEY = "android.ivo.bake_it.bundle_keys.step";
     public static final String CURRENT_STEP_PAGE = "android.ivo.bake_it.bundle_keys.current_step_index";
-    Bundle extras;
-    Recipe recipe;
+
+    private Bundle extras;
+    private Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step);
-
-        BakeItApplication bakeItApplication = (BakeItApplication) getApplication();
 
         extras = getIntent().getExtras();
         recipe = getNonNullRecipeFromBundle(extras);
@@ -59,9 +58,6 @@ public class StepActivity extends AppCompatActivity implements RecipeDetailFragm
         updateDetailFragment(position);
     }
 
-    /*
-     * Sends STEP_BUNDLE_KEY and CURRENT_PAGE to details fragment and updates the details fragment UI.
-     * */
     private void updateDetailFragment(int position) {
         RecipeDetailFragment detailFragment = (RecipeDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.activity_step_fragment);

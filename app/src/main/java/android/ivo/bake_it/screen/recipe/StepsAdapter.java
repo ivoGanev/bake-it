@@ -41,8 +41,9 @@ class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Step step = steps.get(position);
+        String text = position + ") " + step.getShortDescription();
 
-        holder.binding.itemStepShortDescription.setText(position + ") " + step.getShortDescription());
+        holder.binding.itemStepShortDescription.setText(text);
 
         HttpMediaFormat httpMediaFormat = new HttpMediaFormat(step.getThumbnailURL());
         if (httpMediaFormat.getFormat() == HttpMediaFormat.MP4) {
@@ -64,7 +65,7 @@ class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private ItemStepBinding binding;
+        private final ItemStepBinding binding;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
