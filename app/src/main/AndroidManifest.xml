@@ -29,7 +29,8 @@
             android:parentActivityName=".screen.recipe.RecipeActivity" />
         <activity
             android:name=".screen.recipe.RecipeActivity"
-            android:parentActivityName=".screen.main.MainActivity" />
+            android:parentActivityName=".screen.main.MainActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".screen.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
