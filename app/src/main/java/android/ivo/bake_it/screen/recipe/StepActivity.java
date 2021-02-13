@@ -28,11 +28,6 @@ public class StepActivity extends AppCompatActivity implements RecipeDetailFragm
         recipe = getNonNullRecipeFromBundle(extras);
         int currentStepPage = extras.getInt(CURRENT_STEP_PAGE);
 
-        if (extras != null) {
-            for (String s : extras.keySet()) {
-                Timber.d(s);
-            }
-        }
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.activity_step_fragment, RecipeDetailFragment.newInstance(toStepBundle(currentStepPage)))
                 .commit();

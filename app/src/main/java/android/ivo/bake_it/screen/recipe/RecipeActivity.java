@@ -9,7 +9,13 @@ import android.ivo.bake_it.model.Recipe;
 import android.ivo.bake_it.model.Step;
 import android.ivo.bake_it.screen.main.MainActivity;
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.widget.Toast;
+
+import timber.log.Timber;
+
+import static timber.log.Timber.d;
 
 public class RecipeActivity extends AppCompatActivity
         implements RecipeMasterFragment.OnStepClickedListener,
@@ -70,15 +76,18 @@ public class RecipeActivity extends AppCompatActivity
     public void onStepButtonClicked(int position) {
         if (!application.deviceIsTablet()) {
             Recipe recipe = getNonNullRecipeFromBundle(getIntent().getExtras());
-            startStepActivity(recipe);
+            startStepActivity(recipe, position);
         } else {
             updateDetailFragment(position);
         }
     }
 
-    private void startStepActivity(Recipe value) {
+    private void startStepActivity(Recipe value, int position) {
         Intent intent = new Intent(this, StepActivity.class);
+
         intent.putExtra(MainActivity.RECIPE_BUNDLE_KEY, value);
+        intent.putExtra(StepActivity.CURRENT_STEP_PAGE, position);
+
         startActivity(intent);
     }
 
