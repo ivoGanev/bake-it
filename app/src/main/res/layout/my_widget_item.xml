@@ -7,6 +7,7 @@
     android:padding="12dp">
 
     <TextView
+        android:textColor="@color/black"
         android:id="@+id/my_widget_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,6 +19,7 @@
         tools:layout_editor_absoluteY="22dp" />
 
     <TextView
+        android:textColor="@color/black"
         android:layout_toStartOf="@id/my_widget_item_measure"
         android:id="@+id/my_widget_item_quantity"
         android:layout_width="wrap_content"
@@ -28,6 +30,7 @@
         tools:layout_editor_absoluteY="22dp" />
 
     <TextView
+        android:textColor="@color/black"
         android:layout_alignParentEnd="true"
         android:id="@+id/my_widget_item_measure"
         android:layout_width="wrap_content"
