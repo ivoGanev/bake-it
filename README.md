@@ -1,6 +1,6 @@
 # bake-it
 
-Bake-it is an android app that explores baking recipes from an Udacity server. Includes its own widget for accessing quickly a recipe and can display a video turorial if the recipe has one.
+Bake-it is an Android app that explores baking recipes from an Udacity server. Includes its own widget for accessing quickly a recipe and can display a video turorial if the recipe has one.
  
 ## Motivation
 Created for personal self-develpment and exploration of design and programming practices for the Android OS including:
