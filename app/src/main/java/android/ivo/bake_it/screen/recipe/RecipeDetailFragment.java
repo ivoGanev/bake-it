@@ -102,6 +102,7 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         if (player==null) {
             player = new SimpleExoPlayer.Builder(requireContext()).build();
             binding.fragmentRecipeDetailExoPlayer.setPlayer(player);
+            binding.fragmentRecipeDetailExoPlayer.setShowBuffering(PlayerView.SHOW_BUFFERING_ALWAYS);
         }
 
         BakeItApplication application = (BakeItApplication) requireContext().getApplicationContext();
@@ -112,8 +113,6 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
 
         MediaSource mediaSource = toMediaSource(uri);
         player.prepare(mediaSource);
-
-        player.setPlayWhenReady(false);
         player.seekTo(0, 0);
     }
 

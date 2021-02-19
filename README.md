@@ -1,5 +1,9 @@
 # bake-it
 
+![alt-text](etc/1298392.gif)
+
+Android app that explores baking recipes from an Udacity server. Includes its own widget for accessing quickly a recipe and can display a video turorial if the recipe has one.
+
 ## Motivation
 Bake-it is an Android app programmed in Java, created for personal self-develpment and exploration of design and programming practices for the Android OS including:
 
